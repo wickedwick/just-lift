@@ -1,0 +1,86 @@
+{
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject",
+    "test": "jest",
+    "lint": "eslint --ext .ts,.tsx --ignore-pattern node_modules/"
+  },
+  "dependencies": {
+    "@expo/vector-icons": "^12.0.5",
+    "@react-native-async-storage/async-storage": "^1.13.0",
+    "@react-navigation/bottom-tabs": "^5.11.11",
+    "@react-navigation/native": "^6.0.6",
+    "@react-navigation/native-stack": "^6.2.5",
+    "@react-navigation/stack": "^6.0.6",
+    "date-fns": "^2.22.1",
+    "expo": "~41.0.1",
+    "expo-image-picker": "^10.1.4",
+    "expo-linking": "^2.2.3",
+    "expo-splash-screen": "^0.10.2",
+    "expo-status-bar": "~1.0.4",
+    "node-fetch": "^2.6.1",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-41.0.0.tar.gz",
+    "react-native-gesture-handler": "^1.10.3",
+    "react-native-paper": "^4.9.1",
+    "react-native-paper-dropdown": "^1.0.7",
+    "react-native-safe-area-context": "^3.2.0",
+    "react-native-screens": "^3.4.0",
+    "react-native-vector-icons": "^8.1.0",
+    "react-native-web": "~0.13.12",
+    "react-native-webview": "^11.6.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@types/enzyme": "^3.10.9",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
+    "@types/get-pixels": "^3.3.1",
+    "@types/jest": "^26.0.23",
+    "@types/node-fetch": "^2.5.10",
+    "@types/react": "~16.9.35",
+    "@types/react-native": "~0.63.2",
+    "@types/react-test-renderer": "^17.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "@typescript-eslint/parser": "^4.28.3",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "eslint": "^7.30.0",
+    "eslint-config-airbnb": "18.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "jest-expo": "^41.0.0",
+    "jest-react-hooks-shallow": "^1.5.1",
+    "path": "^0.12.7",
+    "react-test-renderer": "^17.0.2",
+    "stream": "^0.0.2",
+    "typescript": "~4.0.0"
+  },
+  "private": true,
+  "jest": {
+    "preset": "jest-expo",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
+    ],
+    "setupFiles": [
+      "./testConfig.ts"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json",
+      "jsx",
+      "node"
+    ],
+    "testEnvironment": "jsdom",
+    "verbose": true,
+    "testURL": "http://localhost/"
+  }
+}
