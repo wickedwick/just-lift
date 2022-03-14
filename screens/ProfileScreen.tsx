@@ -1,14 +1,11 @@
 import React, { useEffect } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { useTheme } from 'react-native-paper'
-import { StackScreenProps } from '@react-navigation/stack'
 import LogCard from '../components/LogCard'
 import { getItemAsync } from '../services/persistence'
-import { TabOneParamList } from '../types/common'
 import { WorkoutPlan } from '../types/workout'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const ProfileScreen = ({ navigation }: StackScreenProps<TabOneParamList, 'ProfileScreen'>): JSX.Element => {
+export const ProfileScreen = (): JSX.Element => {
   const [workoutPlan, setWorkoutPlan] = React.useState<WorkoutPlan | null>(null)
   const { colors } = useTheme()
   const styles = createStyles(colors)

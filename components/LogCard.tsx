@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Card, Text } from 'react-native-paper'
 import { LogCardProps } from '../types/common'
+import { getParsedDate } from '../services/utils'
 
 const LogCard = (props: LogCardProps): JSX.Element => {
   const { log } = props
@@ -11,7 +12,7 @@ const LogCard = (props: LogCardProps): JSX.Element => {
     <Card style={styles.card}>
       <Card.Title title={exerciseName} />
       <Card.Content>
-        <Text style={styles.text}>{date}</Text>
+        <Text style={styles.text}>{getParsedDate(date)}</Text>
         <Text style={styles.text}>{data}</Text>
       </Card.Content>
     </Card>

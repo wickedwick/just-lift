@@ -10,7 +10,7 @@ const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
 
   useEffect(() => {
     const newCounts = []
-    for(let i = 0; i < exercise.sets; i++) {
+    for(let i = 0; i < exercise.reps; i++) {
       newCounts.push(0)
     }
 
@@ -23,7 +23,7 @@ const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
     if (newCounts[index] > 0) {
       newCounts[index]--
     } else {
-      newCounts[index] = 5
+      newCounts[index] = exercise.reps
     }
 
     setCounts(newCounts)
