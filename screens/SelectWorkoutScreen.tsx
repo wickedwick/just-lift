@@ -1,21 +1,30 @@
 import React from 'react'
 import { ScrollView, StyleSheet, Text } from 'react-native'
-import { Button } from 'react-native-paper'
 import { StackScreenProps } from '@react-navigation/stack'
 import { TabOneParamList } from '../types/common'
+import ActionButton from '../components/ActionButton'
 
 export default function SelectWorkoutScreen({
   navigation
 }: StackScreenProps<TabOneParamList, 'SelectWorkoutScreen'>): JSX.Element {
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text>SelectWorkoutScreen</Text>
-      <Button
-        mode='contained'
+      <ActionButton
+        contained
+        onPress={() => navigation.navigate('GuidedSelectionScreen')}
+        text="Guided"
+        style={styles.button}
+      />
+      <ActionButton
+        contained
+        onPress={() => navigation.navigate('WorkoutListScreen')}
+        text="Select from List"
+        style={styles.button}
+      />
+      <ActionButton
         onPress={() => navigation.navigate('BlankMenuScreen')}
-      >
-        Menu
-      </Button>
+        text="Menu"
+      />
     </ScrollView>
   )
 }
@@ -24,4 +33,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
   },
+  button: {
+    marginBottom: 10,
+  }
 })

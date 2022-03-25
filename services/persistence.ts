@@ -13,10 +13,3 @@ export async function setItemAsync<T>(key: string, value: T): Promise<void> {
 export async function removeItemAsync(key: string): Promise<void> {
   await AsyncStorage.removeItem(key)
 }
-
-export function getItem(key: string, setWorkoutPlan: (workoutPlan: WorkoutPlan) => void): void {
-  AsyncStorage.getItem(key).then(value => {
-    const workoutPlan = JSON.parse(value || 'null') as WorkoutPlan
-    setWorkoutPlan(workoutPlan)
-  })
-}

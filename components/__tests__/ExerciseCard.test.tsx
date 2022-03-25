@@ -1,9 +1,10 @@
 import React from 'react'
-import { Button, Card } from 'react-native-paper'
+import { Card } from 'react-native-paper'
 import { configure, shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import ExerciseCard from '../ExerciseCard'
 import { WeightUnit } from '../../types/workout'
+import ActionButton from '../ActionButton'
 
 configure({ adapter: new Adapter() })
 
@@ -20,6 +21,7 @@ describe('<ExerciseCard />', () => {
     },
     cardIndex: 0,
     onRemovePress: jest.fn(),
+    onEditPress: jest.fn(),
   }
 
   it('Renders with props', () => {
@@ -32,8 +34,15 @@ describe('<ExerciseCard />', () => {
 
   it('Handles remove press', () => {
     const wrapper = shallow(<ExerciseCard {...cardProps} />)
-    const removeButton = wrapper.find(Card).find(Card.Actions).find(Button)
+    const removeButton = wrapper.find(Card).find(Card.Actions).find(ActionButton).first()
     removeButton.simulate('press')
     expect(cardProps.onRemovePress).toHaveBeenCalled()
+  })
+
+  it('Handles edit press', () => {
+    const wrapper = shallow(<ExerciseCard {...cardProps} />)
+    const removeButton = wrapper.find(Card).find(Card.Actions).find(ActionButton).last()
+    removeButton.simulate('press')
+    expect(cardProps.onEditPress).toHaveBeenCalled()
   })
 })

@@ -4,6 +4,7 @@ import { Button, Card, useTheme } from 'react-native-paper'
 import { StackScreenProps } from '@react-navigation/stack'
 import { removeItemAsync } from '../services/persistence'
 import { TabOneParamList } from '../types/common'
+import ActionButton from '../components/ActionButton'
 
 const SettingsScreen = ({ navigation }: StackScreenProps<TabOneParamList, 'SettingsScreen'>): JSX.Element => {
   const { colors } = useTheme()
@@ -19,12 +20,11 @@ const SettingsScreen = ({ navigation }: StackScreenProps<TabOneParamList, 'Setti
         </Card.Content>
       </Card>
       <Text style={styles.heading}>View Your Profile</Text>
-      <Button
-        mode="contained"
+      <ActionButton
+        contained
         onPress={() => navigation.navigate('ProfileScreen')}
-      >
-        Profile
-      </Button>
+        text="Profile"
+      />
     </ScrollView>
   )
 }

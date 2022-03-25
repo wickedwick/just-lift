@@ -1,28 +1,24 @@
 import { Exercise, Log, Workout, WorkoutPlan } from '../types/workout';
 
 export const finishWorkout = (workouts: Workout[], finishedWorkout: Workout): Workout[] | undefined => {
-  const newWorkouts = workouts.map(workout => {
+  return workouts.map(workout => {
     if (workout.id === finishedWorkout.id) {
-      const exercises: Exercise[] | undefined = incrementProgressiveOverload(workout.exercises)
+      const exercises: Exercise[] = memoizeExercises(workout.exercises)
       return {...finishedWorkout, exercises: exercises} as Workout
     }
 
     return {...workout} as Workout
   })
-
-  return newWorkouts
 }
 
-export const incrementProgressiveOverload = (exercises: Exercise[]): Exercise[] | undefined => {
-  const newExercises: Exercise[] = exercises.map(exercise => {
+export const memoizeExercises = (exercises: Exercise[]): Exercise[] => {
+  return exercises.map(exercise => {
     if (exercise.progressiveOverload) {
       return { ...exercise, weight: exercise.weight + exercise.overloadIncrement } as Exercise
     }
 
     return {...exercise}
   })
-
-  return newExercises
 }
 
 export const incrementWorkoutIndex = (workoutPlan: WorkoutPlan): number => {

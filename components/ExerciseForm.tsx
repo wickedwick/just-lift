@@ -4,6 +4,7 @@ import { Button, Switch, Text, TextInput, useTheme } from 'react-native-paper'
 import DropDown from 'react-native-paper-dropdown'
 import { WorkoutFormProps } from '../types/common'
 import { WeightUnit } from '../types/workout'
+import ActionButton from './ActionButton'
 
 const ExerciseForm = (props: WorkoutFormProps): JSX.Element => {
   const { exercise, onSubmit, onCancel } = props
@@ -88,17 +89,15 @@ const ExerciseForm = (props: WorkoutFormProps): JSX.Element => {
         style={styles.input}
         keyboardType={'numeric'}
       />
-      <Button
-        mode="contained"
+      <ActionButton
+        contained
         onPress={() => onSubmitPress()}
-      >
-        Submit
-      </Button>
-      <Button
+        text="Submit"
+      />
+      <ActionButton
         onPress={() => onCancel()}
-      >
-        Cancel
-      </Button>
+        text="Cancel"
+      />
     </View>
   )
 }

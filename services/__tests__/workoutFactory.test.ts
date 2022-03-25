@@ -1,5 +1,5 @@
 import { Exercise, WeightUnit, Workout, WorkoutPlan } from '../../types/workout'
-import { finishWorkout, incrementProgressiveOverload, incrementWorkoutIndex, updateWorkoutPlan } from '../workoutFactory'
+import { finishWorkout, memoizeExercises, incrementWorkoutIndex, updateWorkoutPlan } from '../workoutFactory'
 
 const exercises: Exercise[] = [
   {
@@ -51,7 +51,7 @@ describe('workoutFactory', () => {
     })
   })
 
-  describe('incrementProgressiveOverload', () => {
+  describe('memoizeExercises', () => {
     it('increments the weight of an exercise', () => {
       const exercises: Exercise[] = [{
         name: 'test',
@@ -63,7 +63,7 @@ describe('workoutFactory', () => {
         weightUnit: WeightUnit.Lbs,
       }]
 
-      const newExercises: Exercise[] | undefined = incrementProgressiveOverload(exercises) as Exercise[]
+      const newExercises: Exercise[] | undefined = memoizeExercises(exercises) as Exercise[]
       expect(newExercises[0].weight).toBe(15)
     })
   })

@@ -9,6 +9,8 @@ import ProfileScreen from './screens/ProfileScreen'
 import SelectWorkoutScreen from './screens/SelectWorkoutScreen'
 import SettingsScreen from './screens/SettingsScreen'
 import WorkoutScreen from './screens/WorkoutScreen'
+import GuidedSelectionScreen from './screens/GuidedSelectionScreen'
+import WorkoutListScreen from './screens/WorkoutListScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -52,6 +54,16 @@ export default function App(): JSX.Element {
             name='ProfileScreen'
             component={ProfileScreen}
             options={{ title: 'Profile' }}
+          />
+          <Stack.Screen
+            name='GuidedSelectionScreen'
+            component={GuidedSelectionScreen}
+            options={{ title: 'Guided Selection' }}
+          />
+          <Stack.Screen
+            name='WorkoutListScreen'
+            component={WorkoutListScreen}
+            options={{ title: 'Workout List' }}
           />
         </Stack.Navigator>
       </NavigationContainer>

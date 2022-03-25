@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { Button, useTheme } from 'react-native-paper'
+import { useTheme } from 'react-native-paper'
 import { StackScreenProps } from '@react-navigation/stack'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import ExerciseCard from '../components/ExerciseCard'
 import ExerciseForm from '../components/ExerciseForm'
 import { TabOneParamList } from '../types/common'
 import { Exercise, Workout, WorkoutPlan } from '../types/workout'
+import ActionButton from '../components/ActionButton'
 
 export default function CreateWorkoutScreen({
   navigation
@@ -109,21 +110,19 @@ export default function CreateWorkoutScreen({
       {!showExerciseForm && (
         <View style={styles.flexContainer}>
           {workoutIndex > 0 && (
-            <Button
-              mode="contained"
+            <ActionButton
+              contained
               onPress={() => { setWorkoutIndex(workoutIndex - 1) }}
-            >
-              Previous
-            </Button>
+              text="Previous"
+            />
           )}
           {workouts && <Text style={styles.heading}>Workout {workouts[workoutIndex]?.id}</Text>}
           {workoutIndex < workouts.length - 1 && (
-            <Button
-              mode="contained"
+            <ActionButton
+              contained
               onPress={() => { setWorkoutIndex(workoutIndex + 1) }}
-            >
-              Next
-            </Button>
+              text="Next"
+            />
           )}
         </View>
       )}
@@ -133,37 +132,33 @@ export default function CreateWorkoutScreen({
       ))}
 
       {!showExerciseForm && (
-        <Button
+        <ActionButton
           onPress={() => { setShowExerciseForm(true) }}
-        >
-          Add Exercise
-        </Button>
+          text="Add Exercise"
+        />
       )}
 
       {!showExerciseForm && workoutIndex === workouts.length - 1 && (
-        <Button
+        <ActionButton
           onPress={onAddWorkout}
-        >
-          Add Workout
-        </Button>
+          text="Add Workout"
+        />
       )}
 
       {!showExerciseForm && workoutIndex > 0 && (
-        <Button
+        <ActionButton
           onPress={onRemoveWorkout}
-        >
-          Remove Workout
-        </Button>
+          text="Remove Workout"
+        />
       )}
 
       {!showExerciseForm && (
-        <Button
-          mode="contained"
+        <ActionButton
+          contained
           onPress={onSavePress}
           style={{ marginTop: 10 }}
-        >
-          Save
-        </Button>
+          text="Save"
+        />
       )}
     </ScrollView>
   )
@@ -171,8 +166,8 @@ export default function CreateWorkoutScreen({
 
 const createStyles = (colors: ReactNativePaper.ThemeColors) => StyleSheet.create({
   container: {
-    flex: 1,
     margin: 10,
+    marginBottom: 35,
   },
   input: {
     borderTopLeftRadius: 0,

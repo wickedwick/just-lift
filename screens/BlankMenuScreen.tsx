@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { StyleSheet, ScrollView, View } from 'react-native'
-import { Button } from 'react-native-paper'
 import { StackScreenProps } from '@react-navigation/stack'
 import { getItemAsync, setItemAsync } from '../services/persistence'
 import { TabOneParamList } from '../types/common'
 import { Workout, WorkoutPlan } from '../types/workout'
+import ActionButton from '../components/ActionButton'
 
 export default function BlankMenu({
   navigation
@@ -38,65 +38,58 @@ export default function BlankMenu({
     <ScrollView contentContainerStyle={styles.container}>
       {workouts.length === 0 && (
         <View>
-          <Button
-            mode="contained"
+          <ActionButton
+            contained
             onPress={() => navigation.navigate('CreateWorkoutScreen')}
             style={styles.button}
-          >
-            Create Workout
-          </Button>
-          <Button
-            mode="contained"
+            text="Create Workout"
+          />
+          <ActionButton
+            contained
             onPress={() => navigation.navigate('SelectWorkoutScreen')}
             style={styles.button}
-          >
-            Select a Workout Plan
-          </Button>
+            text="Select a Workout Plan"
+          />
         </View>
       )}
 
       {workouts.length > 0 && (
         <View>
           {!workoutPlan?.workoutInProgress && (
-            <Button
-              mode="contained"
+            <ActionButton
+              contained
               onPress={handleStartWorkout}
               style={styles.button}
-            >
-              Start Workout
-            </Button>
+              text="Start Workout"
+            />
           )}
           {workoutPlan?.workoutInProgress && (
-            <Button
-              mode="contained"
+            <ActionButton
+              contained
               onPress={() => navigation.navigate('WorkoutScreen')}
               style={styles.button}
-            >
-              Continue Workout
-            </Button>
+              text="Continue Workout"
+            />
           )}
-          <Button
-            mode="contained"
+          <ActionButton
+            contained
             onPress={() => navigation.navigate('CreateWorkoutScreen')}
             style={styles.button}
-          >
-            Edit Workout
-          </Button>
+            text="Edit Workout"
+          />
         </View>
       )}
 
-      <Button
+      <ActionButton
         onPress={() => navigation.navigate('SettingsScreen')}
         style={styles.button}
-      >
-        Settings
-      </Button>
-      <Button
+        text="Settings"
+      />
+      <ActionButton
         onPress={() => navigation.navigate('ProfileScreen')}
         style={styles.button}
-      >
-        Profile
-      </Button>
+        text="Profile"
+      />
     </ScrollView>
   )
 }

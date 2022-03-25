@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
-import { Button, Card, Text } from 'react-native-paper'
+import { Card, Text } from 'react-native-paper'
+import ActionButton from './ActionButton'
 import { ExerciseCardProps } from '../types/common'
 import { WeightUnit } from '../types/workout'
 
@@ -17,8 +18,8 @@ const ExerciseCard = (props: ExerciseCardProps): JSX.Element => {
         <Text style={styles.text}>{progressiveOverload ? `Adding ${overloadIncrement} ${WeightUnit[weightUnit]} every workout` : ''}</Text>
       </Card.Content>
       <Card.Actions>
-        <Button onPress={() => onRemovePress()} style={styles.removeButton}>Remove</Button>
-        <Button onPress={() => onEditPress()} style={styles.removeButton}>Edit</Button>
+        <ActionButton onPress={() => onRemovePress()} style={styles.removeButton} text="Remove" />
+        <ActionButton onPress={() => onEditPress()} style={styles.removeButton} text="Edit" />
       </Card.Actions>
     </Card>
   )

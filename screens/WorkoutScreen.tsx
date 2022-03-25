@@ -7,6 +7,7 @@ import { getItemAsync, setItemAsync } from '../services/persistence'
 import { finishWorkout, updateWorkoutPlan } from '../services/workoutFactory'
 import { TabOneParamList } from '../types/common'
 import { Log, Workout, WorkoutPlan } from '../types/workout'
+import ActionButton from '../components/ActionButton'
 
 const emptyWorkout: Workout = {
   id: '',
@@ -66,9 +67,12 @@ const WorkoutScreen = ({
       {workout.exercises.map(exercise => (
         <ExerciseCounter key={exercise.name} exercise={exercise} setLogData={setLogData} />
       ))}
-      <Button style={styles.button} mode='contained' onPress={handleFinishExercise}>
-        Finish Workout
-      </Button>
+      <ActionButton
+        style={styles.button}
+        contained
+        onPress={handleFinishExercise}
+        text="Finish Workout"
+      />
     </ScrollView>
   )
 }

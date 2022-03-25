@@ -17,17 +17,13 @@ export type TabOneParamList = {
   WorkoutScreen: undefined
   SettingsScreen: undefined
   ProfileScreen: undefined
+  GuidedSelectionScreen: undefined
+  WorkoutListScreen: undefined
 }
 
 export type TabTwoParamList = {
   TabOneScreen: undefined
   TabTwoScreen: undefined
-}
-
-export type AppMenuProps = {
-  onCameraPress: () => void
-  onFolderPress: () => void
-  onClearPress: () => void
 }
 
 export type WorkoutFormProps = {
@@ -49,4 +45,12 @@ export type ExerciseCounterProps = {
 
 export type LogCardProps = {
   log: Log
+}
+
+export type ActionButtonProps = {
+  onPress: () => void
+  text: string
+  contained?: boolean
+  icon?: string
+  style?: any
 }

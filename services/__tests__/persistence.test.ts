@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { getItem, getItemAsync, setItemAsync, removeItemAsync } from '../persistence'
+import { getItemAsync, setItemAsync, removeItemAsync } from '../persistence'
 
 describe('Persistence', () => {
   describe('getItemAsync', () => {
@@ -27,17 +27,6 @@ describe('Persistence', () => {
       const key = 'key'
       await removeItemAsync(key)
       expect(spy).toHaveBeenCalledWith(key)
-    })
-  })
-
-  describe('getItem', () => {
-    it('Calls the passed in setter function', async () => {
-      const p = Promise.resolve()
-      const setter = jest.fn()
-      const key = 'key'
-      getItem(key, setter)
-      await p
-      expect(setter).toHaveBeenCalled()
     })
   })
 })
