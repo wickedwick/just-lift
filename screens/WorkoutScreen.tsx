@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react'
-import { ScrollView, StyleSheet, Text } from 'react-native'
-import { Button, useTheme } from 'react-native-paper'
-import { StackScreenProps } from '@react-navigation/stack'
-import ExerciseCounter from '../components/ExerciseCounter'
-import { getItemAsync, setItemAsync } from '../services/persistence'
-import { finishWorkout, updateWorkoutPlan } from '../services/workoutFactory'
-import { TabOneParamList } from '../types/common'
-import { Log, Workout, WorkoutPlan } from '../types/workout'
-import ActionButton from '../components/ActionButton'
+import ActionButton from '../components/ActionButton';
+import ExerciseCounter from '../components/ExerciseCounter';
+import React, { useEffect } from 'react';
+import { Button, useTheme } from 'react-native-paper';
+import { finishWorkout, updateWorkoutPlan } from '../services/workoutFactory';
+import { getItemAsync, setItemAsync } from '../services/persistence';
+import { Log, Workout, WorkoutPlan } from '../types/workout';
+import { ScrollView, StyleSheet, Text } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { TabOneParamList } from '../types/common';
 
 const emptyWorkout: Workout = {
   id: '',

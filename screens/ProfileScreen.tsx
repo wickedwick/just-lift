@@ -1,9 +1,14 @@
-import React, { useEffect } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { useTheme } from 'react-native-paper'
-import LogCard from '../components/LogCard'
-import { getItemAsync } from '../services/persistence'
-import { WorkoutPlan } from '../types/workout'
+import LogCard from '../components/LogCard';
+import React, { useEffect } from 'react';
+import { getItemAsync } from '../services/persistence';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
+  } from 'react-native';
+import { useTheme } from 'react-native-paper';
+import { WorkoutPlan } from '../types/workout';
 
 export const ProfileScreen = (): JSX.Element => {
   const [workoutPlan, setWorkoutPlan] = React.useState<WorkoutPlan | null>(null)

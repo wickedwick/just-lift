@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { WorkoutPlan } from '../types/workout'
 
 export async function getItemAsync<T>(key: string): Promise<T> {
   const value = await AsyncStorage.getItem(key)

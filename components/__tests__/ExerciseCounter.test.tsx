@@ -1,10 +1,10 @@
-import React from 'react'
-import { Button, Card } from 'react-native-paper'
-import { configure, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
-import ExerciseCounter from '../ExerciseCounter'
-import { ExerciseCounterProps } from '../../types/common'
-import { Exercise, WeightUnit } from '../../types/workout'
+import Adapter from 'enzyme-adapter-react-16';
+import ExerciseCounter from '../ExerciseCounter';
+import React from 'react';
+import { Button, Card } from 'react-native-paper';
+import { configure, shallow } from 'enzyme';
+import { Exercise, WeightUnit } from '../../types/workout';
+import { ExerciseCounterProps } from '../../types/common';
 
 configure({ adapter: new Adapter() })
 

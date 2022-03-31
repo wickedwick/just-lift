@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react'
-import renderer, { ReactTestRendererJSON } from 'react-test-renderer'
-import NotFoundScreen from '../NotFoundScreen'
+import NotFoundScreen from '../NotFoundScreen';
+import React from 'react';
+import renderer, { ReactTestRendererJSON } from 'react-test-renderer';
 
 describe('<NotFoundScreen />', () => {
   it('Renders', () => {

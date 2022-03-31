@@ -1,16 +1,16 @@
-import React from 'react'
-import { Provider as PaperProvider } from 'react-native-paper'
-import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { darkTheme } from './constants/Theme'
-import BlankMenuScreen from './screens/BlankMenuScreen'
-import CreateWorkoutScreen from './screens/CreateWorkoutScreen'
-import ProfileScreen from './screens/ProfileScreen'
-import SelectWorkoutScreen from './screens/SelectWorkoutScreen'
-import SettingsScreen from './screens/SettingsScreen'
-import WorkoutScreen from './screens/WorkoutScreen'
-import GuidedSelectionScreen from './screens/GuidedSelectionScreen'
-import WorkoutListScreen from './screens/WorkoutListScreen'
+import BlankMenuScreen from './screens/BlankMenuScreen';
+import CreateWorkoutScreen from './screens/CreateWorkoutScreen';
+import GuidedSelectionScreen from './screens/GuidedSelectionScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import React from 'react';
+import SelectWorkoutScreen from './screens/SelectWorkoutScreen';
+import SettingsScreen from './screens/SettingsScreen';
+import WorkoutListScreen from './screens/WorkoutListScreen';
+import WorkoutScreen from './screens/WorkoutScreen';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { darkTheme } from './constants/Theme';
+import { NavigationContainer } from '@react-navigation/native';
+import { Provider as PaperProvider } from 'react-native-paper';
 
 const Stack = createNativeStackNavigator()
 

@@ -1,10 +1,10 @@
-import React from 'react'
-import { ScrollView, StyleSheet, Text } from 'react-native'
-import { Button, Card, useTheme } from 'react-native-paper'
-import { StackScreenProps } from '@react-navigation/stack'
-import { removeItemAsync } from '../services/persistence'
-import { TabOneParamList } from '../types/common'
-import ActionButton from '../components/ActionButton'
+import ActionButton from '../components/ActionButton';
+import React from 'react';
+import { Button, Card, useTheme } from 'react-native-paper';
+import { removeItemAsync } from '../services/persistence';
+import { ScrollView, StyleSheet, Text } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { TabOneParamList } from '../types/common';
 
 const SettingsScreen = ({ navigation }: StackScreenProps<TabOneParamList, 'SettingsScreen'>): JSX.Element => {
   const { colors } = useTheme()

@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
-import { StyleSheet } from 'react-native'
-import { Card, Button, Text } from 'react-native-paper'
-import { ExerciseCounterProps } from '../types/common'
-import { Log, WeightUnit } from '../types/workout'
+import React, { useEffect } from 'react';
+import { Button, Card, Text } from 'react-native-paper';
+import { ExerciseCounterProps } from '../types/common';
+import { Log, WeightUnit } from '../types/workout';
+import { StyleSheet } from 'react-native';
 
 const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
   const { exercise, setLogData } = props

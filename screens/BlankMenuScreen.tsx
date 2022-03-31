@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
-import { StyleSheet, ScrollView, View } from 'react-native'
-import { StackScreenProps } from '@react-navigation/stack'
-import { getItemAsync, setItemAsync } from '../services/persistence'
-import { TabOneParamList } from '../types/common'
-import { Workout, WorkoutPlan } from '../types/workout'
-import ActionButton from '../components/ActionButton'
+import ActionButton from '../components/ActionButton';
+import React, { useEffect } from 'react';
+import { getItemAsync, setItemAsync } from '../services/persistence';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { TabOneParamList } from '../types/common';
+import { Workout, WorkoutPlan } from '../types/workout';
 
 export default function BlankMenu({
   navigation

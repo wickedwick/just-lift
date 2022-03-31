@@ -1,10 +1,10 @@
-import React from 'react'
-import { Text } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { configure, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
-import CreateWorkoutScreen from '../CreateWorkoutScreen'
-import ActionButton from '../../components/ActionButton'
+import ActionButton from '../../components/ActionButton';
+import Adapter from 'enzyme-adapter-react-16';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CreateWorkoutScreen from '../CreateWorkoutScreen';
+import React from 'react';
+import { configure, shallow } from 'enzyme';
+import { Text } from 'react-native';
 
 configure({ adapter: new Adapter() })
 

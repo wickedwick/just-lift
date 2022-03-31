@@ -1,8 +1,8 @@
-import React from 'react'
-import { Card } from 'react-native-paper'
-import { configure, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
-import LogCard from '../LogCard'
+import Adapter from 'enzyme-adapter-react-16';
+import LogCard from '../LogCard';
+import React from 'react';
+import { Card } from 'react-native-paper';
+import { configure, shallow } from 'enzyme';
 
 configure({ adapter: new Adapter() })
 

@@ -1,4 +1,9 @@
-import { Exercise, Log, Workout, WorkoutPlan } from '../types/workout';
+import {
+  Exercise,
+  Log,
+  Workout,
+  WorkoutPlan
+  } from '../types/workout';
 
 export const finishWorkout = (workouts: Workout[], finishedWorkout: Workout): Workout[] | undefined => {
   return workouts.map(workout => {
@@ -42,4 +47,14 @@ export const updateWorkoutPlan = (workoutPlan: WorkoutPlan | null, workouts: Wor
   }
 
   return newWorkoutPlan
+}
+
+export const createWorkoutPlan = (): WorkoutPlan => {
+  return {
+    workouts: [],
+    daysPerWeek: 1,
+    workoutIndex: 0,
+    workoutInProgress: false,
+    logs: [],
+  }
 }

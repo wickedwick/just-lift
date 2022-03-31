@@ -1,5 +1,15 @@
-import { Exercise, WeightUnit, Workout, WorkoutPlan } from '../../types/workout'
-import { finishWorkout, memoizeExercises, incrementWorkoutIndex, updateWorkoutPlan } from '../workoutFactory'
+import {
+  Exercise,
+  WeightUnit,
+  Workout,
+  WorkoutPlan
+  } from '../../types/workout';
+import {
+  finishWorkout,
+  incrementWorkoutIndex,
+  memoizeExercises,
+  updateWorkoutPlan
+  } from '../workoutFactory';
 
 const exercises: Exercise[] = [
   {

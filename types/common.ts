@@ -1,4 +1,4 @@
-import { Exercise, Log } from './workout'
+import { Exercise, Log } from './workout';
 
 export type RootStackParamList = {
   Root: undefined,
@@ -53,4 +53,15 @@ export type ActionButtonProps = {
   contained?: boolean
   icon?: string
   style?: any
+}
+
+export type RadioButtonProps = {
+  label: string
+  value: string
+}
+
+export type CheckboxProps = {
+  label: string
+  status: 'checked' | 'unchecked'
+  onPress: () => void
 }

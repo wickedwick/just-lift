@@ -1,13 +1,18 @@
-import React, { useEffect } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { useTheme } from 'react-native-paper'
-import { StackScreenProps } from '@react-navigation/stack'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import ExerciseCard from '../components/ExerciseCard'
-import ExerciseForm from '../components/ExerciseForm'
-import { TabOneParamList } from '../types/common'
-import { Exercise, Workout, WorkoutPlan } from '../types/workout'
-import ActionButton from '../components/ActionButton'
+import ActionButton from '../components/ActionButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ExerciseCard from '../components/ExerciseCard';
+import ExerciseForm from '../components/ExerciseForm';
+import React, { useEffect } from 'react';
+import { Exercise, Workout, WorkoutPlan } from '../types/workout';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
+  } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { TabOneParamList } from '../types/common';
+import { useTheme } from 'react-native-paper';
 
 export default function CreateWorkoutScreen({
   navigation

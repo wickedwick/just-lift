@@ -1,8 +1,8 @@
-import React from 'react'
-import { Text } from 'react-native'
-import { configure, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
-import WorkoutScreen from '../WorkoutScreen'
+import Adapter from 'enzyme-adapter-react-16';
+import React from 'react';
+import WorkoutScreen from '../WorkoutScreen';
+import { configure, shallow } from 'enzyme';
+import { Text } from 'react-native';
 
 configure({ adapter: new Adapter() })
 

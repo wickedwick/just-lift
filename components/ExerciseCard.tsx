@@ -1,9 +1,9 @@
-import React from 'react'
-import { StyleSheet } from 'react-native'
-import { Card, Text } from 'react-native-paper'
-import ActionButton from './ActionButton'
-import { ExerciseCardProps } from '../types/common'
-import { WeightUnit } from '../types/workout'
+import ActionButton from './ActionButton';
+import React from 'react';
+import { Card, Text } from 'react-native-paper';
+import { ExerciseCardProps } from '../types/common';
+import { StyleSheet } from 'react-native';
+import { WeightUnit } from '../types/workout';
 
 const ExerciseCard = (props: ExerciseCardProps): JSX.Element => {
   const { exercise, onEditPress, onRemovePress } = props

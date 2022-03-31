@@ -1,5 +1,5 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { getItemAsync, setItemAsync, removeItemAsync } from '../persistence'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getItemAsync, removeItemAsync, setItemAsync } from '../persistence';
 
 describe('Persistence', () => {
   describe('getItemAsync', () => {

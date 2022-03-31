@@ -1,8 +1,8 @@
-import React from 'react'
-import { ScrollView, StyleSheet, Text } from 'react-native'
-import { StackScreenProps } from '@react-navigation/stack'
-import { TabOneParamList } from '../types/common'
-import ActionButton from '../components/ActionButton'
+import ActionButton from '../components/ActionButton';
+import React from 'react';
+import { ScrollView, StyleSheet, Text } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { TabOneParamList } from '../types/common';
 
 export default function SelectWorkoutScreen({
   navigation
@@ -32,6 +32,7 @@ export default function SelectWorkoutScreen({
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    padding: 30,
   },
   button: {
     marginBottom: 10,

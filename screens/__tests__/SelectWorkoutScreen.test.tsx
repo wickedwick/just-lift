@@ -1,7 +1,7 @@
-import React from 'react'
-import { configure, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
-import SelectWorkoutScreen from '../SelectWorkoutScreen'
+import Adapter from 'enzyme-adapter-react-16';
+import React from 'react';
+import SelectWorkoutScreen from '../SelectWorkoutScreen';
+import { configure, shallow } from 'enzyme';
 
 configure({ adapter: new Adapter() })
 

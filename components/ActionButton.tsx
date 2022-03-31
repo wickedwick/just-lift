@@ -1,6 +1,6 @@
-import React from 'react'
-import { Button } from 'react-native-paper'
-import { ActionButtonProps } from '../types/common'
+import React from 'react';
+import { ActionButtonProps } from '../types/common';
+import { Button } from 'react-native-paper';
 
 const ActionButton = (props: ActionButtonProps): JSX.Element => {
   return (

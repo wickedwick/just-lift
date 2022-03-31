@@ -1,7 +1,7 @@
-import React from 'react'
-import { configure, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
-import BlankMenuScreen from '../BlankMenuScreen'
+import Adapter from 'enzyme-adapter-react-16';
+import BlankMenuScreen from '../BlankMenuScreen';
+import React from 'react';
+import { configure, shallow } from 'enzyme';
 
 configure({ adapter: new Adapter() })
 

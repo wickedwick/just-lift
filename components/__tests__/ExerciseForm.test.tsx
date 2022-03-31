@@ -1,8 +1,8 @@
-import React from 'react'
-import { configure, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
-import ExerciseForm from '../ExerciseForm'
-import ActionButton from '../ActionButton'
+import ActionButton from '../ActionButton';
+import Adapter from 'enzyme-adapter-react-16';
+import ExerciseForm from '../ExerciseForm';
+import React from 'react';
+import { configure, shallow } from 'enzyme';
 
 configure({ adapter: new Adapter() })
 

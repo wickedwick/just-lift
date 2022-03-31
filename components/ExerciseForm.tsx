@@ -1,10 +1,15 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Button, Switch, Text, TextInput, useTheme } from 'react-native-paper'
-import DropDown from 'react-native-paper-dropdown'
-import { WorkoutFormProps } from '../types/common'
-import { WeightUnit } from '../types/workout'
-import ActionButton from './ActionButton'
+import ActionButton from './ActionButton';
+import DropDown from 'react-native-paper-dropdown';
+import React from 'react';
+import {
+  Switch,
+  Text,
+  TextInput,
+  useTheme
+  } from 'react-native-paper';
+import { StyleSheet, View } from 'react-native';
+import { WeightUnit } from '../types/workout';
+import { WorkoutFormProps } from '../types/common';
 
 const ExerciseForm = (props: WorkoutFormProps): JSX.Element => {
   const { exercise, onSubmit, onCancel } = props

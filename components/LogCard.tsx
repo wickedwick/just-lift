@@ -1,8 +1,8 @@
-import React from 'react'
-import { StyleSheet } from 'react-native'
-import { Card, Text } from 'react-native-paper'
-import { LogCardProps } from '../types/common'
-import { getParsedDate } from '../services/utils'
+import React from 'react';
+import { Card, Text } from 'react-native-paper';
+import { getParsedDate } from '../services/utils';
+import { LogCardProps } from '../types/common';
+import { StyleSheet } from 'react-native';
 
 const LogCard = (props: LogCardProps): JSX.Element => {
   const { log } = props

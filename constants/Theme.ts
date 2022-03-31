@@ -1,5 +1,5 @@
-import { configureFonts, DefaultTheme } from 'react-native-paper'
-import customFonts from './Fonts'
+import customFonts from './Fonts';
+import { configureFonts, DefaultTheme } from 'react-native-paper';
 
 export const theme = {
   ...DefaultTheme,

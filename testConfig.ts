@@ -26,5 +26,5 @@ jest.mock("react-native-paper", () => {
     List: list,
     Appbar: appBar,
     BottomNavigation: bottomNav
-  };
-});
+  }
+})

@@ -1,7 +1,7 @@
-import React from 'react'
-import { ScrollView, StyleSheet, Text } from 'react-native'
-import { StackScreenProps } from '@react-navigation/stack'
-import { TabOneParamList } from '../types/common'
+import React from 'react';
+import { ScrollView, StyleSheet, Text } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { TabOneParamList } from '../types/common';
 
 export default function WorkoutListScreen({
   navigation

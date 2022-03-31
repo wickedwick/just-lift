@@ -1,9 +1,9 @@
-import React from 'react'
-import { Button } from 'react-native-paper'
-import { configure, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
-import SettingsScreen from '../SettingsScreen'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import Adapter from 'enzyme-adapter-react-16';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React from 'react';
+import SettingsScreen from '../SettingsScreen';
+import { Button } from 'react-native-paper';
+import { configure, shallow } from 'enzyme';
 
 configure({ adapter: new Adapter() })
 

@@ -1,10 +1,10 @@
-import React from 'react'
-import { Card } from 'react-native-paper'
-import { configure, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
-import ExerciseCard from '../ExerciseCard'
-import { WeightUnit } from '../../types/workout'
-import ActionButton from '../ActionButton'
+import ActionButton from '../ActionButton';
+import Adapter from 'enzyme-adapter-react-16';
+import ExerciseCard from '../ExerciseCard';
+import React from 'react';
+import { Card } from 'react-native-paper';
+import { configure, shallow } from 'enzyme';
+import { WeightUnit } from '../../types/workout';
 
 configure({ adapter: new Adapter() })
 

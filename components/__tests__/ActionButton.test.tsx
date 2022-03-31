@@ -1,12 +1,13 @@
-import { configure, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
-import React from 'react'
-import { Button } from 'react-native-paper'
-import ActionButton from '../ActionButton'
+import ActionButton from '../ActionButton';
+import Adapter from 'enzyme-adapter-react-16';
+import React from 'react';
+import { ActionButtonProps } from '../../types/common';
+import { Button } from 'react-native-paper';
+import { configure, shallow } from 'enzyme';
 
 configure({ adapter: new Adapter() })
 
-const props = {
+const props: ActionButtonProps = {
   icon: 'add',
   text: 'Add',
   onPress: jest.fn(),
