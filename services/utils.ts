@@ -1,4 +1,4 @@
-export const getParsedDate = (strDate: Date) => {
+export const getParsedDate = (strDate: Date): string => {
   var strSplitDate = String(strDate).split(' ')
   var date = new Date(strSplitDate[0])
   let amPm = 'AM'
@@ -16,4 +16,13 @@ export const getParsedDate = (strDate: Date) => {
   
   let dateStr =  `${mm}/${dd}/${yyyy} ${hh}:${min} ${amPm}`
   return dateStr
+}
+
+export const getNumberOrDefault = (value: string): number => {
+  const numberValue = parseInt(value)
+  if (isNaN(numberValue)) {
+    return 0
+  }
+
+  return numberValue
 }

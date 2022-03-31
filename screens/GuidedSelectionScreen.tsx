@@ -2,12 +2,9 @@ import ActionButton from '../components/ActionButton';
 import Checkbox from '../components/Checkbox';
 import RadioButton from '../components/RadioButton';
 import React from 'react';
-import {
-  RadioButton as PaperRadioButton,
-  Text,
-  TextInput
-  } from 'react-native-paper';
 import { createWorkoutPlan } from '../services/workoutFactory';
+import { getNumberOrDefault } from '../services/utils';
+import { RadioButton as PaperRadioButton, Text, TextInput } from 'react-native-paper';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { TabOneParamList } from '../types/common';
@@ -38,15 +35,6 @@ export default function GuidedSelectionScreen({
     }
 
     setGoals([...goals, value])
-  }
-
-  const handleNumDays = (value: string): void => {
-    const num = parseInt(value, 10)
-    if (isNaN(num)) {
-      return
-    }
-
-    setNumDays(num)
   }
 
   const handleCreateWorkout = (): void => {
@@ -88,7 +76,7 @@ export default function GuidedSelectionScreen({
 
       <Text style={styles.heading}>How many days per week?</Text>
       <View>
-        <TextInput value={numDays.toString()} onChangeText={(text) => handleNumDays(text)} />
+        <TextInput value={numDays.toString()} onChangeText={(text) => setNumDays(getNumberOrDefault(text))} />
       </View>
 
       <ActionButton

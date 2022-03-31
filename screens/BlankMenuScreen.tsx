@@ -44,12 +44,13 @@ export default function BlankMenu({
             style={styles.button}
             text="Create Workout"
           />
-          <ActionButton
+
+          {/* <ActionButton
             contained
             onPress={() => navigation.navigate('SelectWorkoutScreen')}
             style={styles.button}
             text="Select a Workout Plan"
-          />
+          /> */}
         </View>
       )}
 
@@ -63,6 +64,7 @@ export default function BlankMenu({
               text="Start Workout"
             />
           )}
+
           {workoutPlan?.workoutInProgress && (
             <ActionButton
               contained
@@ -71,6 +73,7 @@ export default function BlankMenu({
               text="Continue Workout"
             />
           )}
+
           <ActionButton
             contained
             onPress={() => navigation.navigate('CreateWorkoutScreen')}
@@ -85,6 +88,7 @@ export default function BlankMenu({
         style={styles.button}
         text="Settings"
       />
+
       <ActionButton
         onPress={() => navigation.navigate('ProfileScreen')}
         style={styles.button}

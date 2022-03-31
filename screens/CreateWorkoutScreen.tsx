@@ -96,7 +96,6 @@ export default function CreateWorkoutScreen({
 
     const jsonValue = JSON.stringify(newWorkoutPlan)
     await AsyncStorage.setItem('workoutPlan', jsonValue)
-    navigation.reset({ routes: [{ name: 'BlankMenuScreen' }] })
   }
 
   useEffect(() => {
@@ -158,12 +157,18 @@ export default function CreateWorkoutScreen({
       )}
 
       {!showExerciseForm && (
-        <ActionButton
-          contained
-          onPress={onSavePress}
-          style={{ marginTop: 10 }}
-          text="Save"
-        />
+        <View style={{ padding: 20 }}>
+          <ActionButton
+            contained
+            onPress={onSavePress}
+            style={{ marginTop: 10 }}
+            text="Save"
+            />
+          <ActionButton
+            onPress={() => navigation.reset({ routes: [{ name: 'BlankMenuScreen' }] })}
+            text="Home"
+          />
+        </View>
       )}
     </ScrollView>
   )

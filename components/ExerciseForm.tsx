@@ -1,13 +1,14 @@
 import ActionButton from './ActionButton';
 import DropDown from 'react-native-paper-dropdown';
 import React from 'react';
+import { getNumberOrDefault } from '../services/utils';
+import { StyleSheet, View } from 'react-native';
 import {
   Switch,
   Text,
   TextInput,
   useTheme
   } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
 import { WeightUnit } from '../types/workout';
 import { WorkoutFormProps } from '../types/common';
 
@@ -51,21 +52,21 @@ const ExerciseForm = (props: WorkoutFormProps): JSX.Element => {
       <TextInput
         label={`Sets`}
         value={sets.toString()}
-        onChangeText={(text) => { setSets(parseInt(text)) }}
+        onChangeText={(text) => { setSets(getNumberOrDefault(text)) }}
         style={styles.input}
         keyboardType={'numeric'}
         />
       <TextInput
         label={`Reps`}
         value={reps.toString()}
-        onChangeText={(text) => { setReps(parseInt(text)) }}
+        onChangeText={(text) => { setReps(getNumberOrDefault(text)) }}
         style={styles.input}
         keyboardType={'numeric'}
         />
       <TextInput
         label={`Weight`}
         value={weight.toString()}
-        onChangeText={(text) => { setWeight(parseInt(text)) }}
+        onChangeText={(text) => { setWeight(getNumberOrDefault(text)) }}
         style={styles.input}
         keyboardType={'numeric'}
       />
@@ -90,7 +91,7 @@ const ExerciseForm = (props: WorkoutFormProps): JSX.Element => {
       <TextInput
         label={`Weight Increment Amount`}
         value={overloadIncrement.toString()}
-        onChangeText={(text) => { setOverloadIncrement(parseInt(text)) }}
+        onChangeText={(text) => { setOverloadIncrement(getNumberOrDefault(text)) }}
         style={styles.input}
         keyboardType={'numeric'}
       />
