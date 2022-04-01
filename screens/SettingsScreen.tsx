@@ -13,13 +13,16 @@ const SettingsScreen = ({ navigation }: StackScreenProps<TabOneParamList, 'Setti
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.heading}>Settings</Text>
+
       <Card style={styles.card}>
         <Card.Title title='Delete Workout Plan' subtitle="WARNING: This removes all data, including your log history" />
         <Card.Content>
           <Button mode="contained" color="red" onPress={() => removeItemAsync('workoutPlan')}>Delete</Button>
         </Card.Content>
       </Card>
+
       <Text style={styles.heading}>View Your Profile</Text>
+      
       <ActionButton
         contained
         onPress={() => navigation.navigate('ProfileScreen')}

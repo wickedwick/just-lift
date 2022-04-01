@@ -120,7 +120,9 @@ export default function CreateWorkoutScreen({
               text="Previous"
             />
           )}
+
           {workouts && <Text style={styles.heading}>Workout {workouts[workoutIndex]?.id}</Text>}
+          
           {workoutIndex < workouts.length - 1 && (
             <ActionButton
               contained
@@ -163,7 +165,8 @@ export default function CreateWorkoutScreen({
             onPress={onSavePress}
             style={{ marginTop: 10 }}
             text="Save"
-            />
+          />
+          
           <ActionButton
             onPress={() => navigation.reset({ routes: [{ name: 'BlankMenuScreen' }] })}
             text="Home"

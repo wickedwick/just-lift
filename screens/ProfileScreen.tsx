@@ -26,15 +26,18 @@ export const ProfileScreen = (): JSX.Element => {
     <ScrollView style={styles.container}>
       <View>
         <Text style={styles.heading}>My Profile</Text>
+        
         <Text style={styles.text}>
           Edit your profile information here.
         </Text>
       </View>
       <View>
         <Text style={styles.heading}>My Workouts</Text>
+        
         <Text style={styles.text}>
           View your workouts here.
         </Text>
+        
         {workoutPlan?.logs.map((log, index) => (
           <LogCard key={index} log={log} />
         ))}

@@ -49,20 +49,23 @@ const ExerciseForm = (props: WorkoutFormProps): JSX.Element => {
         onChangeText={(text) => { setName(text) }}
         style={styles.input}
       />
+
       <TextInput
         label={`Sets`}
         value={sets.toString()}
         onChangeText={(text) => { setSets(getNumberOrDefault(text)) }}
         style={styles.input}
         keyboardType={'numeric'}
-        />
+      />
+      
       <TextInput
         label={`Reps`}
         value={reps.toString()}
         onChangeText={(text) => { setReps(getNumberOrDefault(text)) }}
         style={styles.input}
         keyboardType={'numeric'}
-        />
+      />
+      
       <TextInput
         label={`Weight`}
         value={weight.toString()}
@@ -70,6 +73,7 @@ const ExerciseForm = (props: WorkoutFormProps): JSX.Element => {
         style={styles.input}
         keyboardType={'numeric'}
       />
+      
       <DropDown
         label={'Weight Unit'}
         visible={showDropDown}
@@ -79,8 +83,10 @@ const ExerciseForm = (props: WorkoutFormProps): JSX.Element => {
         setValue={(val) => { setWeightUnit(val) }}
         list={weightUnits}
       />
+
       <View style={styles.switchContainer}>
         <Text style={styles.label}>Progressive Overload</Text>
+        
         <Switch
           color={colors.primary}
           style={styles.switch}
@@ -88,6 +94,7 @@ const ExerciseForm = (props: WorkoutFormProps): JSX.Element => {
           onValueChange={() => { setProgressiveOverload(!progressiveOverload) }}
         />
       </View>
+
       <TextInput
         label={`Weight Increment Amount`}
         value={overloadIncrement.toString()}
@@ -95,11 +102,13 @@ const ExerciseForm = (props: WorkoutFormProps): JSX.Element => {
         style={styles.input}
         keyboardType={'numeric'}
       />
+
       <ActionButton
         contained
         onPress={() => onSubmitPress()}
         text="Submit"
       />
+      
       <ActionButton
         onPress={() => onCancel()}
         text="Cancel"

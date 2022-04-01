@@ -15,12 +15,14 @@ export default function SelectWorkoutScreen({
         text="Guided"
         style={styles.button}
       />
+
       <ActionButton
         contained
         onPress={() => navigation.navigate('WorkoutListScreen')}
         text="Select from List"
         style={styles.button}
       />
+      
       <ActionButton
         onPress={() => navigation.navigate('BlankMenuScreen')}
         text="Menu"

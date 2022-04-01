@@ -57,10 +57,12 @@ export default function GuidedSelectionScreen({
         <Checkbox label="Dumbbells" status={equipment.includes('dumbbells') ? 'checked' : 'unchecked'} onPress={() => handleEquipment('dumbbells')} />
         <Checkbox label="Barbell" status={equipment.includes('barbell') ? 'checked' : 'unchecked'} onPress={() => handleEquipment('barbell')} />
       </View>
+      
       <View style={styles.radioRow}>
         <Checkbox label="Pullup Bar" status={equipment.includes('pullupBar') ? 'checked' : 'unchecked'} onPress={() => handleEquipment('pullupBar')} />
         <Checkbox label="Kettle Bells" status={equipment.includes('kettleBells') ? 'checked' : 'unchecked'} onPress={() => handleEquipment('kettleBells')} />
       </View>
+      
       <View style={styles.radioRow}>
         <Checkbox label="Resistence Straps" status={equipment.includes('resistenceStraps') ? 'checked' : 'unchecked'} onPress={() => handleEquipment('resistenceStraps')} />
       </View>
@@ -70,6 +72,7 @@ export default function GuidedSelectionScreen({
         <Checkbox label="Strength" status={goals.includes('strength') ? 'checked' : 'unchecked'} onPress={() => handleGoals('strength')} />
         <Checkbox label="Weight Loss" status={goals.includes('weightLoss') ? 'checked' : 'unchecked'} onPress={() => handleGoals('weightLoss')} />
       </View>
+      
       <View style={styles.radioRow}>
         <Checkbox label="Endurance" status={goals.includes('endurance') ? 'checked' : 'unchecked'} onPress={() => handleGoals('endurance')} />
       </View>
@@ -85,6 +88,7 @@ export default function GuidedSelectionScreen({
         text="Let's Go!"
         style={styles.button}
       />
+      
       <ActionButton
         onPress={() => navigation.navigate('SelectWorkoutScreen')}
         text="Back"

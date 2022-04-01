@@ -14,9 +14,11 @@ const LogCard = (props: LogCardProps): JSX.Element => {
       <Card.Title title={exerciseName} />
       <Card.Content>
         <Text style={styles.text}>{getParsedDate(date)}</Text>
+        
         {weight && (
           <Text style={styles.text}>{weight} {weightUnit === WeightUnit.Lbs ? 'lbs' : 'kg'}</Text>
         )}
+        
         <Text style={styles.text}>{data}</Text>
       </Card.Content>
     </Card>
