@@ -61,17 +61,35 @@ const WorkoutScreen = ({
     navigation.reset({ routes: [{ name: 'BlankMenuScreen' }] })
   }
 
+  const handleNextExercise = () => {
+    const workouts: Workout[] | undefined = finishWorkout(workoutPlan?.workouts as Workout[], workout)
+    const newWorkoutPlan: WorkoutPlan = updateWorkoutPlan(workoutPlan, workouts, logs)
+
+    setWorkoutPlan(newWorkoutPlan)
+    setWorkout(newWorkoutPlan.workouts[newWorkoutPlan.workoutIndex])
+    
+    const newLogs = workoutPlan?.logs || []
+    setLogs(newLogs)
+  }
+
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Workout {workout.id}</Text>
+      
       {workout.exercises.map(exercise => (
         <ExerciseCounter key={exercise.name} exercise={exercise} setLogData={setLogData} />
       ))}
+
       <ActionButton
         style={styles.button}
         contained
         onPress={handleFinishExercise}
         text="Finish Workout"
+      />
+      
+      <ActionButton
+        onPress={handleNextExercise}
+        text="Skip Workout"
       />
     </ScrollView>
   )

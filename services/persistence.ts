@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export async function getItemAsync<T>(key: string): Promise<T> {
-  const value = await AsyncStorage.getItem(key)
+  const value: string | null = await AsyncStorage.getItem(key)
   return JSON.parse(value || 'null') as T
 }
 

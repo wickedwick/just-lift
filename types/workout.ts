@@ -26,6 +26,8 @@ export type Log = {
   workoutId: string
   data: string
   exerciseName: string
+  weight: number
+  weightUnit: WeightUnit
 }
 
 export enum WeightUnit {

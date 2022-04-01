@@ -1,28 +1,38 @@
 export const getParsedDate = (strDate: Date): string => {
-  var strSplitDate = String(strDate).split(' ')
-  var date = new Date(strSplitDate[0])
-  let amPm = 'AM'
-  var dd = date.getDate()
-  var mm = date.getMonth() + 1
-  var hh = date.getHours()
+  const strSplitDate: string[] = String(strDate).split(' ')
+  const date: Date = new Date(strSplitDate[0])
   
-  if (hh > 12) {
-    hh -= 12
-    amPm = 'PM'
+  const dd: number = date.getDate()
+  const mm: number = date.getMonth() + 1
+  let hh: number = date.getHours()
+  
+  if (hh >= 12) {
+    if (hh > 12) {
+      hh -= 12
+    }
   }
-
-  var min = date.getMinutes()
-  var yyyy = date.getFullYear()
   
-  let dateStr =  `${mm}/${dd}/${yyyy} ${hh}:${min} ${amPm}`
+  let amPm: 'AM' | 'PM' = derivedAmPm(hh)
+  const min: number = date.getMinutes()
+  const yyyy: number = date.getFullYear()
+  
+  let dateStr: string =  `${mm}/${dd}/${yyyy} ${hh}:${min} ${amPm}`
   return dateStr
 }
 
 export const getNumberOrDefault = (value: string): number => {
-  const numberValue = parseInt(value)
+  const numberValue: number = parseInt(value)
   if (isNaN(numberValue)) {
     return 0
   }
 
   return numberValue
+}
+
+export const derivedAmPm = (hh: number): 'AM' | 'PM' => {
+  if (hh >= 12) {
+    return 'PM'
+  }
+
+  return 'AM'
 }

@@ -27,7 +27,7 @@ export const memoizeExercises = (exercises: Exercise[]): Exercise[] => {
 }
 
 export const incrementWorkoutIndex = (workoutPlan: WorkoutPlan): number => {
-  let workoutIndex = (workoutPlan?.workoutIndex && workoutPlan?.workoutIndex >= 0) ? workoutPlan?.workoutIndex + 1 : 1
+  let workoutIndex: number = (workoutPlan?.workoutIndex && workoutPlan?.workoutIndex >= 0) ? workoutPlan?.workoutIndex + 1 : 1
   if (workoutPlan?.workouts && workoutIndex >= workoutPlan?.workouts.length) {
     workoutIndex = 0
   }
@@ -36,7 +36,7 @@ export const incrementWorkoutIndex = (workoutPlan: WorkoutPlan): number => {
 }
 
 export const updateWorkoutPlan = (workoutPlan: WorkoutPlan | null, workouts: Workout[] | undefined, logs: Log[]): WorkoutPlan => {
-  const workoutIndex = incrementWorkoutIndex(workoutPlan as WorkoutPlan)
+  const workoutIndex: number = incrementWorkoutIndex(workoutPlan as WorkoutPlan)
 
   const newWorkoutPlan: WorkoutPlan = {
     workouts: workouts || [],

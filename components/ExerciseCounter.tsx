@@ -32,6 +32,8 @@ const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
       workoutId: '',
       data: newCounts.join(', '),
       exerciseName: exercise.name,
+      weight: exercise.weight,
+      weightUnit: exercise.weightUnit,
     }
 
     setLogData(newLog)
@@ -41,6 +43,7 @@ const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
     <Card style={styles.card}>
       <Card.Title title={exercise.name} />
       <Card.Content>
+        <Text>{exercise.reps} reps</Text>
         <Text style={styles.weightLabel}>{exercise.weight} {exercise.weightUnit === WeightUnit.Kg ? 'Kg' : 'Lbs'}</Text>
       </Card.Content>
       <Card.Content style={styles.flexContainer}>
