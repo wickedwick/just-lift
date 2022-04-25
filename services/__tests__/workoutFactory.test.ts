@@ -8,6 +8,7 @@ import {
   finishWorkout,
   incrementWorkoutIndex,
   memoizeExercises,
+  updateWorkoutExercises,
   updateWorkoutPlan
   } from '../workoutFactory';
 
@@ -90,6 +91,26 @@ describe('workoutFactory', () => {
       const newWorkoutPlan: WorkoutPlan = updateWorkoutPlan(workoutPlan, workoutPlan.workouts, [])
       expect(newWorkoutPlan.workoutIndex).toBe(1)
       expect(newWorkoutPlan.workoutInProgress).toBe(false)
+    })
+  })
+
+  describe('updateWorkoutExercises', () => {
+    it('Returns a new workout', () => {
+      const newWorkout: Workout = {
+        id: '1',
+        exercises: [{
+          name: 'test',
+          sets: 5,
+          reps: 10,
+          weight: 10,
+          progressiveOverload: true,
+          overloadIncrement: 5,
+          weightUnit: WeightUnit.Lbs,
+        }]
+      }
+
+      const updatedWorkout: Workout = updateWorkoutExercises(newWorkout, exercises)
+      expect(updatedWorkout.exercises.length).toBe(2)
     })
   })
 })
