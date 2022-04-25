@@ -41,6 +41,7 @@ export type ExerciseCardProps = {
 export type ExerciseCounterProps = {
   exercise: Exercise
   setLogData: (log: Log) => void
+  setWeight: (weight: number, exerciseName: string) => void
 }
 
 export type LogCardProps = {

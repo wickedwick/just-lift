@@ -1,13 +1,14 @@
 import ActionButton from '../components/ActionButton';
 import ExerciseCounter from '../components/ExerciseCounter';
 import React, { useEffect } from 'react';
-import { Button, useTheme } from 'react-native-paper';
-import { finishWorkout, updateWorkoutPlan } from '../services/workoutFactory';
+import { changeWeight } from '../services/exerciseFactory';
+import { finishWorkout, incrementWorkoutIndex, updateWorkoutExercises, updateWorkoutPlan } from '../services/workoutFactory';
 import { getItemAsync, setItemAsync } from '../services/persistence';
 import { Log, Workout, WorkoutPlan } from '../types/workout';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { TabOneParamList } from '../types/common';
+import { useTheme } from 'react-native-paper';
 
 const emptyWorkout: Workout = {
   id: '',
@@ -52,7 +53,7 @@ const WorkoutScreen = ({
     setLogs(newLogs)
   }
   
-  const handleFinishExercise = async () => {
+  const handleFinishWorkout = async () => {
     const workouts: Workout[] | undefined = finishWorkout(workoutPlan?.workouts as Workout[], workout)    
     const newWorkoutPlan: WorkoutPlan = updateWorkoutPlan(workoutPlan, workouts, logs)
 
@@ -61,10 +62,13 @@ const WorkoutScreen = ({
     navigation.reset({ routes: [{ name: 'BlankMenuScreen' }] })
   }
 
-  const handleNextExercise = () => {
-    const workouts: Workout[] | undefined = finishWorkout(workoutPlan?.workouts as Workout[], workout)
-    const newWorkoutPlan: WorkoutPlan = updateWorkoutPlan(workoutPlan, workouts, logs)
-
+  const handleNextWorkout = () => {
+    if (!workoutPlan) {
+      return
+    }
+    
+    const newWorkoutPlan: WorkoutPlan = {...workoutPlan, workoutIndex: incrementWorkoutIndex(workoutPlan)} as WorkoutPlan
+    
     setWorkoutPlan(newWorkoutPlan)
     setWorkout(newWorkoutPlan.workouts[newWorkoutPlan.workoutIndex])
     
@@ -72,23 +76,29 @@ const WorkoutScreen = ({
     setLogs(newLogs)
   }
 
+  const handleChangeWeight = (weight: number, exerciseName: string) => {
+    const newExersises = changeWeight(workout.exercises, exerciseName, weight)
+    const newWorkout: Workout = updateWorkoutExercises(workout, newExersises)
+    setWorkout(newWorkout)
+  }
+
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Workout {workout.id}</Text>
       
       {workout.exercises.map(exercise => (
-        <ExerciseCounter key={exercise.name} exercise={exercise} setLogData={setLogData} />
+        <ExerciseCounter key={exercise.name} exercise={exercise} setLogData={setLogData} setWeight={handleChangeWeight} />
       ))}
 
       <ActionButton
         style={styles.button}
         contained
-        onPress={handleFinishExercise}
+        onPress={handleFinishWorkout}
         text="Finish Workout"
       />
       
       <ActionButton
-        onPress={handleNextExercise}
+        onPress={handleNextWorkout}
         text="Skip Workout"
       />
     </ScrollView>

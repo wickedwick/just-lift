@@ -1,10 +1,11 @@
-import Adapter from 'enzyme-adapter-react-16';
-import ExerciseCounter from '../ExerciseCounter';
-import React from 'react';
-import { Button, Card } from 'react-native-paper';
-import { configure, shallow } from 'enzyme';
-import { Exercise, WeightUnit } from '../../types/workout';
-import { ExerciseCounterProps } from '../../types/common';
+import Adapter from 'enzyme-adapter-react-16'
+import ExerciseCounter from '../ExerciseCounter'
+import React from 'react'
+import { Button, Card, TextInput } from 'react-native-paper'
+import { configure, shallow } from 'enzyme'
+import { Exercise, WeightUnit } from '../../types/workout'
+import { ExerciseCounterProps } from '../../types/common'
+import { TouchableOpacity } from 'react-native'
 
 configure({ adapter: new Adapter() })
 
@@ -20,7 +21,8 @@ const exercise: Exercise = {
 
 const props: ExerciseCounterProps = {
   exercise,
-  setLogData: jest.fn()
+  setLogData: jest.fn(),
+  setWeight: jest.fn()
 }
 
 describe('<ExerciseCounter />', () => {
@@ -49,5 +51,13 @@ describe('<ExerciseCounter />', () => {
     wrapper.find(Button).at(2).simulate('press')
     expect(wrapper.find(Button).at(2).text()).toEqual('3')
     expect(props.setLogData).toHaveBeenCalledTimes(6)
+
+    const to = wrapper.find(TouchableOpacity)
+    to.first().props().onLongPress()
+    expect(wrapper.find(TouchableOpacity).find(TextInput)).toHaveLength(1)
+
+    const ti = wrapper.find(TouchableOpacity).find(TextInput)
+    ti.first().props().onChangeText('100')
+    expect(props.setWeight).toHaveBeenCalledWith(100, exercise.name)
   })
 })

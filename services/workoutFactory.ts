@@ -58,3 +58,10 @@ export const createWorkoutPlan = (): WorkoutPlan => {
     logs: [],
   }
 }
+
+export const updateWorkoutExercises = (workout: Workout, exercises: Exercise[]): Workout => {
+  return {
+    ...workout,
+    exercises: exercises,
+  }
+}

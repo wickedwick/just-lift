@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
-import { Button, Card, Text } from 'react-native-paper';
+import { Button, Card, Text, TextInput } from 'react-native-paper';
 import { ExerciseCounterProps } from '../types/common';
 import { Log, WeightUnit } from '../types/workout';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { getNumberOrDefault } from '../services/utils';
 
 const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
-  const { exercise, setLogData } = props
+  const { exercise, setLogData, setWeight } = props
   const [counts, setCounts] = React.useState<number[]>([])
+  const [isEditingWeight, setIsEditingWeight] = React.useState<boolean>(false)
 
   useEffect(() => {
     const newCounts = []
@@ -44,7 +46,29 @@ const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
       <Card.Title title={exercise.name} />
       <Card.Content>
         <Text>{exercise.reps} reps</Text>
-        <Text style={styles.weightLabel}>{exercise.weight} {exercise.weightUnit === WeightUnit.Kg ? 'Kg' : 'Lbs'}</Text>
+        <TouchableOpacity
+          onLongPress={() => { setIsEditingWeight(!isEditingWeight) }}
+          activeOpacity={0.6}
+        >
+          {isEditingWeight ? (
+            <>
+              <TextInput
+                label={`Weight`}
+                value={exercise.weight.toString()}
+                onChangeText={(text) => { setWeight(getNumberOrDefault(text), exercise.name) }}
+                style={styles.textInput}
+                keyboardType={'numeric'}
+              />
+              <Button
+                onPress={() => { setIsEditingWeight(!isEditingWeight) }}
+              >
+                Done
+              </Button>
+            </>
+          ) : (
+            <Text style={styles.weightLabel}>{exercise.weight} {exercise.weightUnit === WeightUnit.Kg ? 'Kg' : 'Lbs'}</Text>
+          )}
+        </TouchableOpacity>
       </Card.Content>
       <Card.Content style={styles.flexContainer}>
         {[...Array(exercise.sets)].map((_, index) => (
@@ -88,6 +112,11 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 50,
+    padding: 3,
+  },
+  textInput: {
+    marginBottom: 10,
+    marginTop: 10,
     padding: 3,
   },
   flexContainer: {
