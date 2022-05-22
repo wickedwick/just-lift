@@ -9,6 +9,7 @@ const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
   const { exercise, setLogData, setWeight } = props
   const [counts, setCounts] = React.useState<number[]>([])
   const [isEditingWeight, setIsEditingWeight] = React.useState<boolean>(false)
+  const [repsEditingIndex, setRepsEditingIndex] = React.useState<number>(-1)
 
   useEffect(() => {
     const newCounts = []
@@ -29,6 +30,7 @@ const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
     }
 
     setCounts(newCounts)
+
     const newLog: Log = {
       date: new Date(),
       workoutId: '',
@@ -41,11 +43,19 @@ const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
     setLogData(newLog)
   }
 
+  const handleRepsChange = (text: string, index: number) => {
+    const newReps = getNumberOrDefault(text)
+    const newCounts = [...counts]
+    newCounts[index] = newReps
+    setCounts(newCounts)
+  }
+
   return (
     <Card style={styles.card}>
       <Card.Title title={exercise.name} />
       <Card.Content>
         <Text>{exercise.reps} reps</Text>
+        <Text>{repsEditingIndex} index</Text>
         <TouchableOpacity
           onLongPress={() => { setIsEditingWeight(!isEditingWeight) }}
           activeOpacity={0.6}
@@ -72,16 +82,40 @@ const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
       </Card.Content>
       <Card.Content style={styles.flexContainer}>
         {[...Array(exercise.sets)].map((_, index) => (
-          <Button
+          <TouchableOpacity
+            onLongPress={() => { setRepsEditingIndex(index) }}
+            activeOpacity={0.6}
             key={index}
-            mode='contained'
-            compact
-            style={styles.input}
-            labelStyle={styles.buttonLabel}
-            onPress={() => handleChange(index)}
           >
-            {counts[index]}
-          </Button>
+            {repsEditingIndex === index ? (
+              <>
+                <TextInput
+                  label={`Reps`}
+                  value={counts[index]}
+                  onChangeText={(text) => { handleRepsChange(text, index) }}
+                  style={styles.textInput}
+                  keyboardType={'numeric'}
+                />
+                <Button
+                  onPress={() => { setRepsEditingIndex(-1) }}
+                >
+                  ✓
+                </Button>
+              </>
+            ) : (
+              <Button
+                key={index}
+                mode='contained'
+                compact
+                style={styles.input}
+                labelStyle={styles.buttonLabel}
+                onPress={() => handleChange(index)}
+                onLongPress={() => { setRepsEditingIndex(index) }}
+              >
+                {counts[index]}
+              </Button>
+            )}
+          </TouchableOpacity>
         ))}
       </Card.Content>
     </Card>

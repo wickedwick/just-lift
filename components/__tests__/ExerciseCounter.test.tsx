@@ -59,5 +59,17 @@ describe('<ExerciseCounter />', () => {
     const ti = wrapper.find(TouchableOpacity).find(TextInput)
     ti.first().props().onChangeText('100')
     expect(props.setWeight).toHaveBeenCalledWith(100, exercise.name)
+
+    const textInput = wrapper.find(TouchableOpacity).find(TextInput)
+    expect(textInput.props().label).toEqual('Weight')
+  })
+
+  it('Handles click rep edit event', () => {
+    const wrapper = shallow(<ExerciseCounter {...props} />)
+    const to2 = wrapper.find(TouchableOpacity)
+    to2.last().props().onLongPress()
+    const textInput = wrapper.find(TouchableOpacity).find(TextInput)
+    expect(textInput).toHaveLength(1)
+    expect(textInput.props().label).toEqual('Reps')
   })
 })

@@ -9,6 +9,7 @@ import { ScrollView, StyleSheet, Text } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { TabOneParamList } from '../types/common';
 import { useTheme } from 'react-native-paper';
+import { DatabaseContext } from '../context/DatabaseContext';
 
 const emptyWorkout: Workout = {
   id: '',
@@ -23,6 +24,7 @@ const WorkoutScreen = ({
   const [logs, setLogs] = React.useState<Log[]>([])
   const { colors } = useTheme()
   const styles = createStyles(colors)
+  const { db } = React.useContext(DatabaseContext)
 
   useEffect(() => {
     getItemAsync<WorkoutPlan>('workoutPlan').then(value => {
@@ -59,6 +61,7 @@ const WorkoutScreen = ({
 
     setWorkoutPlan(newWorkoutPlan)
     await setItemAsync<WorkoutPlan>('workoutPlan', newWorkoutPlan)
+    await db.insertAsync(newWorkoutPlan.logs)
     navigation.reset({ routes: [{ name: 'BlankMenuScreen' }] })
   }
 

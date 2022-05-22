@@ -29,6 +29,7 @@
     "react-dom": "17.0.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-44.0.0.tar.gz",
     "react-native-gesture-handler": "~2.1.0",
+    "react-native-local-mongodb": "^4.0.0",
     "react-native-paper": "^4.9.1",
     "react-native-paper-dropdown": "^1.0.7",
     "react-native-safe-area-context": "3.3.2",
