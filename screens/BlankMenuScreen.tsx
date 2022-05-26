@@ -26,7 +26,6 @@ export default function BlankMenu({
       daysPerWeek: workoutPlan?.daysPerWeek || 1,
       workoutIndex: workoutPlan?.workoutIndex || 0,
       workoutInProgress: true,
-      logs: workoutPlan?.logs || [],
     }
 
     setItemAsync<WorkoutPlan>('workoutPlan', newWorkoutPlan)

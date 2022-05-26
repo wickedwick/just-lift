@@ -1,7 +1,5 @@
 export const getParsedDate = (strDate: Date): string => {
-  const strSplitDate: string[] = String(strDate).split(' ')
-  const date: Date = new Date(strSplitDate[0])
-  
+  const date: Date = new Date(strDate)
   const dd: number = date.getDate()
   const mm: number = date.getMonth() + 1
   let hh: number = date.getHours()
@@ -12,11 +10,11 @@ export const getParsedDate = (strDate: Date): string => {
     }
   }
   
-  let amPm: 'AM' | 'PM' = derivedAmPm(hh)
+  const amPm: 'AM' | 'PM' = derivedAmPm(hh)
   const min: number = date.getMinutes()
   const yyyy: number = date.getFullYear()
   
-  let dateStr: string =  `${mm}/${dd}/${yyyy} ${hh}:${min} ${amPm}`
+  let dateStr: string =  `${mm}/${dd}/${yyyy} ${hh}:${min < 10 ? '0' + min : min} ${amPm}`
   return dateStr
 }
 

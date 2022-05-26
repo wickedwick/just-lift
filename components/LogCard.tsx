@@ -26,9 +26,6 @@ const LogCard = (props: LogCardProps): JSX.Element => {
 }
 
 const styles = StyleSheet.create({
-  text: {
-    fontSize: 18,
-  },
   card: {
     marginTop: 5,
     marginBottom: 5,
@@ -36,6 +33,9 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 0,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
+  },
+  text: {
+    fontSize: 18,
   },
 })
 

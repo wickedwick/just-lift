@@ -1,19 +1,25 @@
 import React, { useEffect } from 'react';
-import { Button, Card, Text, TextInput } from 'react-native-paper';
+import {
+  Button,
+  Card,
+  Text,
+  TextInput
+  } from 'react-native-paper';
+import { createLog } from '../services/logFactory';
 import { ExerciseCounterProps } from '../types/common';
+import { getNumberOrDefault } from '../services/utils';
 import { Log, WeightUnit } from '../types/workout';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { getNumberOrDefault } from '../services/utils';
 
 const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
-  const { exercise, setLogData, setWeight } = props
   const [counts, setCounts] = React.useState<number[]>([])
+  const { exercise, setLogData, setWeight } = props
   const [isEditingWeight, setIsEditingWeight] = React.useState<boolean>(false)
   const [repsEditingIndex, setRepsEditingIndex] = React.useState<number>(-1)
 
   useEffect(() => {
     const newCounts = []
-    for(let i = 0; i < exercise.reps; i++) {
+    for(let i = 0; i < exercise.sets; i++) {
       newCounts.push(0)
     }
 
@@ -21,7 +27,7 @@ const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
   }, [exercise])
 
   const handleChange = (index: number) => {
-    const newCounts = [...counts]
+    let newCounts = [...counts]
 
     if (newCounts[index] > 0) {
       newCounts[index]--
@@ -30,17 +36,7 @@ const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
     }
 
     setCounts(newCounts)
-
-    const newLog: Log = {
-      date: new Date(),
-      workoutId: '',
-      data: newCounts.join(', '),
-      exerciseName: exercise.name,
-      weight: exercise.weight,
-      weightUnit: exercise.weightUnit,
-    }
-
-    setLogData(newLog)
+    handleCreateLog()
   }
 
   const handleRepsChange = (text: string, index: number) => {
@@ -50,24 +46,34 @@ const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
     setCounts(newCounts)
   }
 
+  const handleRepsEditingChange = () => {
+    handleCreateLog()
+    setRepsEditingIndex(-1)
+  }
+
+  const handleCreateLog = () => {
+    const newLog: Log = createLog(exercise, counts)
+    setLogData(newLog)
+  }
+
   return (
     <Card style={styles.card}>
       <Card.Title title={exercise.name} />
       <Card.Content>
         <Text>{exercise.reps} reps</Text>
-        <Text>{repsEditingIndex} index</Text>
+
         <TouchableOpacity
-          onLongPress={() => { setIsEditingWeight(!isEditingWeight) }}
           activeOpacity={0.6}
+          onLongPress={() => { setIsEditingWeight(!isEditingWeight) }}
         >
           {isEditingWeight ? (
             <>
               <TextInput
+                keyboardType={'numeric'}
                 label={`Weight`}
-                value={exercise.weight.toString()}
                 onChangeText={(text) => { setWeight(getNumberOrDefault(text), exercise.name) }}
                 style={styles.textInput}
-                keyboardType={'numeric'}
+                value={exercise.weight.toString()}
               />
               <Button
                 onPress={() => { setIsEditingWeight(!isEditingWeight) }}
@@ -80,37 +86,38 @@ const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
           )}
         </TouchableOpacity>
       </Card.Content>
+
       <Card.Content style={styles.flexContainer}>
         {[...Array(exercise.sets)].map((_, index) => (
           <TouchableOpacity
-            onLongPress={() => { setRepsEditingIndex(index) }}
             activeOpacity={0.6}
             key={index}
+            onLongPress={() => { setRepsEditingIndex(index) }}
           >
             {repsEditingIndex === index ? (
               <>
                 <TextInput
+                  keyboardType={'numeric'}
                   label={`Reps`}
-                  value={counts[index]}
                   onChangeText={(text) => { handleRepsChange(text, index) }}
                   style={styles.textInput}
-                  keyboardType={'numeric'}
+                  value={counts[index]?.toString()}
                 />
                 <Button
-                  onPress={() => { setRepsEditingIndex(-1) }}
+                  onPress={() => { handleRepsEditingChange() }}
                 >
                   ✓
                 </Button>
               </>
             ) : (
               <Button
-                key={index}
-                mode='contained'
                 compact
-                style={styles.input}
+                key={index}
                 labelStyle={styles.buttonLabel}
+                mode='contained'
                 onPress={() => handleChange(index)}
                 onLongPress={() => { setRepsEditingIndex(index) }}
+                style={styles.input}
               >
                 {counts[index]}
               </Button>
@@ -123,12 +130,11 @@ const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
 }
 
 const styles = StyleSheet.create({
-  title: {
+  buttonLabel: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  text: {
-    fontSize: 18,
+    alignContent: 'center',
+    margin: 0,
   },
   card: {
     marginTop: 5,
@@ -138,7 +144,10 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
   },
-  removeButton: {
+  flexContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   input: {
     marginBottom: 10,
@@ -148,15 +157,19 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     padding: 3,
   },
+  removeButton: {
+  },
+  text: {
+    fontSize: 18,
+  },
   textInput: {
     marginBottom: 10,
     marginTop: 10,
     padding: 3,
   },
-  flexContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   weightLabel: {
     fontSize: 25,
@@ -164,12 +177,6 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     marginBottom: 10,
     marginRight: 10,
-  },
-  buttonLabel: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    alignContent: 'center',
-    margin: 0,
   },
 })
 

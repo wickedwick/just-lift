@@ -1,7 +1,7 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import { CheckboxProps } from '../types/common'
-import { Checkbox as PaperCheckbox, useTheme } from 'react-native-paper'
+import React from 'react';
+import { Checkbox as PaperCheckbox, useTheme } from 'react-native-paper';
+import { CheckboxProps } from '../types/common';
+import { StyleSheet, View } from 'react-native';
 
 const Checkbox = (props: CheckboxProps): JSX.Element => {
   const { colors } = useTheme()
@@ -9,24 +9,29 @@ const Checkbox = (props: CheckboxProps): JSX.Element => {
   return (
     <View style={styles.checkboxContainer}>
       <View style={styles.checkbox}>
-        <PaperCheckbox.Item status={props.status} color={colors.primary} label={props.label} onPress={props.onPress} />
+        <PaperCheckbox.Item
+          color={colors.primary}
+          label={props.label}
+          onPress={props.onPress}
+          status={props.status}
+        />
       </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  checkboxContainer: {
-    marginBottom: 10,
-    width: '20%',
-    flex: 1,
-    padding: 10,
-  },
   checkbox: {
     borderColor: '#eee',
     borderWidth: 1,
     borderRadius: 50,
     padding: 5,
+  },
+  checkboxContainer: {
+    marginBottom: 10,
+    width: '20%',
+    flex: 1,
+    padding: 10,
   },
 })
 

@@ -10,18 +10,18 @@ configure({ adapter: new Adapter() })
 
 describe('<ExerciseCard />', () => {
   const cardProps = {
+    cardIndex: 0,
     exercise: {
       name: 'Squat',
-      sets: 5,
+      overloadIncrement: 5,
+      progressiveOverload: true,
       reps: 5,
+      sets: 5,
       weight: 100,
       weightUnit: WeightUnit.Lbs,
-      progressiveOverload: true,
-      overloadIncrement: 5,
     },
-    cardIndex: 0,
-    onRemovePress: jest.fn(),
     onEditPress: jest.fn(),
+    onRemovePress: jest.fn(),
   }
 
   it('Renders with props', () => {

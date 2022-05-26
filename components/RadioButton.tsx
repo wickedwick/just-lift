@@ -16,17 +16,17 @@ const RadioButton = (props: RadioButtonProps): JSX.Element => {
 }
 
 const styles = StyleSheet.create({
-  radioContainer: {
-    marginBottom: 10,
-    width: '20%',
-    flex: 1,
-    padding: 10,
-  },
   radio: {
     borderColor: '#eee',
     borderWidth: 1,
     borderRadius: 50,
     padding: 5,
+  },
+  radioContainer: {
+    marginBottom: 10,
+    width: '20%',
+    flex: 1,
+    padding: 10,
   },
 })
 

@@ -17,7 +17,6 @@ export type WorkoutPlan = {
   workouts: Workout[]
   daysPerWeek: number
   workoutIndex: number
-  logs: Log[]
   workoutInProgress: boolean
 }
 

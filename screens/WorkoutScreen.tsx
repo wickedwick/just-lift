@@ -31,8 +31,6 @@ const WorkoutScreen = ({
       const workoutPlan = value
       setWorkoutPlan(workoutPlan)
       setWorkout(workoutPlan?.workouts[workoutPlan?.workoutIndex] || emptyWorkout)
-      const logs = workoutPlan?.logs || []
-      setLogs(logs)
     })
   }, [])
 
@@ -57,11 +55,11 @@ const WorkoutScreen = ({
   
   const handleFinishWorkout = async () => {
     const workouts: Workout[] | undefined = finishWorkout(workoutPlan?.workouts as Workout[], workout)    
-    const newWorkoutPlan: WorkoutPlan = updateWorkoutPlan(workoutPlan, workouts, logs)
+    const newWorkoutPlan: WorkoutPlan = updateWorkoutPlan(workoutPlan, workouts)
 
     setWorkoutPlan(newWorkoutPlan)
     await setItemAsync<WorkoutPlan>('workoutPlan', newWorkoutPlan)
-    await db.insertAsync(newWorkoutPlan.logs)
+    await db.insertAsync(logs)
     navigation.reset({ routes: [{ name: 'BlankMenuScreen' }] })
   }
 
@@ -75,8 +73,7 @@ const WorkoutScreen = ({
     setWorkoutPlan(newWorkoutPlan)
     setWorkout(newWorkoutPlan.workouts[newWorkoutPlan.workoutIndex])
     
-    const newLogs = workoutPlan?.logs || []
-    setLogs(newLogs)
+    setLogs([])
   }
 
   const handleChangeWeight = (weight: number, exerciseName: string) => {

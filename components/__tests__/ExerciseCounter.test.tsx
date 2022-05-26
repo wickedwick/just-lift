@@ -11,12 +11,12 @@ configure({ adapter: new Adapter() })
 
 const exercise: Exercise = {
   name: 'Bench Press',
-  weightUnit: WeightUnit.Lbs,
-  weight: 200,
+  overloadIncrement: 5,
+  progressiveOverload: false,
   reps: 5,
   sets: 3,
-  progressiveOverload: false,
-  overloadIncrement: 5
+  weight: 200,
+  weightUnit: WeightUnit.Lbs,
 }
 
 const props: ExerciseCounterProps = {
@@ -44,6 +44,7 @@ describe('<ExerciseCounter />', () => {
     
     wrapper.find(Button).at(1).simulate('press')
     wrapper.find(Button).at(1).simulate('press')
+    console.log('wrapper', wrapper.find(Button).debug())
     expect(wrapper.find(Button).at(1).text()).toEqual('4')
     
     wrapper.find(Button).at(2).simulate('press')

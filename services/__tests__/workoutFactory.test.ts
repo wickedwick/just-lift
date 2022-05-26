@@ -48,7 +48,6 @@ const workoutPlan: WorkoutPlan = {
   workoutIndex: 0,
   workouts: workouts,
   daysPerWeek: 1,
-  logs: [],
   workoutInProgress: true,
 }
 

@@ -7,8 +7,8 @@ const ActionButton = (props: ActionButtonProps): JSX.Element => {
     <Button
       icon={props.icon}
       mode={props.contained ? 'contained' : 'text'}
-      style={props.style}
       onPress={props.onPress}
+      style={props.style}
     >
       {props.text}
     </Button>

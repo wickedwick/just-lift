@@ -1,6 +1,5 @@
 import {
   Exercise,
-  Log,
   Workout,
   WorkoutPlan
   } from '../types/workout';
@@ -35,7 +34,7 @@ export const incrementWorkoutIndex = (workoutPlan: WorkoutPlan): number => {
   return workoutIndex
 }
 
-export const updateWorkoutPlan = (workoutPlan: WorkoutPlan | null, workouts: Workout[] | undefined, logs: Log[]): WorkoutPlan => {
+export const updateWorkoutPlan = (workoutPlan: WorkoutPlan | null, workouts: Workout[] | undefined): WorkoutPlan => {
   const workoutIndex: number = incrementWorkoutIndex(workoutPlan as WorkoutPlan)
 
   const newWorkoutPlan: WorkoutPlan = {
@@ -43,7 +42,6 @@ export const updateWorkoutPlan = (workoutPlan: WorkoutPlan | null, workouts: Wor
     daysPerWeek: workoutPlan?.daysPerWeek || 1,
     workoutIndex: workoutIndex,
     workoutInProgress: false,
-    logs: logs,
   }
 
   return newWorkoutPlan
@@ -55,7 +53,6 @@ export const createWorkoutPlan = (): WorkoutPlan => {
     daysPerWeek: 1,
     workoutIndex: 0,
     workoutInProgress: false,
-    logs: [],
   }
 }
 

@@ -12,11 +12,13 @@ const ExerciseCard = (props: ExerciseCardProps): JSX.Element => {
   return (
     <Card style={styles.card}>
       <Card.Title title={name} />
+      
       <Card.Content>
         <Text style={styles.text}>{sets} sets of {reps} reps</Text>
         <Text style={styles.text}>{weight} {WeightUnit[weightUnit]}</Text>
         <Text style={styles.text}>{progressiveOverload ? `Adding ${overloadIncrement} ${WeightUnit[weightUnit]} every workout` : ''}</Text>
       </Card.Content>
+
       <Card.Actions>
         <ActionButton onPress={() => onRemovePress()} style={styles.removeButton} text="Remove" />
         <ActionButton onPress={() => onEditPress()} style={styles.removeButton} text="Edit" />
@@ -26,13 +28,6 @@ const ExerciseCard = (props: ExerciseCardProps): JSX.Element => {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  text: {
-    fontSize: 18,
-  },
   card: {
     marginTop: 5,
     marginBottom: 5,
@@ -42,6 +37,13 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 0,
   },
   removeButton: {
+  },
+  text: {
+    fontSize: 18,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 })
 

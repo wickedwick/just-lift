@@ -1,4 +1,4 @@
-import { Exercise } from '../types/workout';
+import { Exercise } from '../types/workout'
 
 export const updateExercises = (exercises: Exercise[], exercise: Exercise): Exercise[] => {
   return exercises.map(e => {

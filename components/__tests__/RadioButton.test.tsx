@@ -16,6 +16,7 @@ describe('<RadioButton />', () => {
   it('Renders', () => {
     const wrapper = shallow(<RadioButton {...props} />)
     const item = wrapper.find(PaperRadioButton.Item)
+    
     expect(item).toHaveLength(1)
     expect(item.prop('label')).toEqual('New Button')
     expect(wrapper).toMatchSnapshot()
