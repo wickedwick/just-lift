@@ -1,4 +1,4 @@
-import { Exercise, Log } from './workout';
+import { Exercise, Log, WorkoutPlan } from './workout';
 
 export type RootStackParamList = {
   Root: undefined,
@@ -65,4 +65,9 @@ export type CheckboxProps = {
   label: string
   status: 'checked' | 'unchecked'
   onPress: () => void
+}
+
+export type WorkoutPlanContextProps = {
+  workoutPlan: WorkoutPlan | null
+  setWorkoutPlan: (workoutPlan: WorkoutPlan | null) => void
 }

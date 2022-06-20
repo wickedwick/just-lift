@@ -15,7 +15,7 @@ export const ProfileScreen = (): JSX.Element => {
   const [logs, setLogs] = React.useState<Log[]>([])
   const { colors } = useTheme()
   const styles = createStyles(colors)
-  const { db } = React.useContext(DatabaseContext)
+  const { logsStore: db } = React.useContext(DatabaseContext)
   
   useEffect(() => {
     db.find({})
@@ -24,6 +24,7 @@ export const ProfileScreen = (): JSX.Element => {
       .exec((err: Error | null, docs: MongoDocument[]) => {
         if (err) {
           console.log(err.message)
+          return
         }
 
         setLogs(docs as Log[])

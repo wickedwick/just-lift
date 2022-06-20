@@ -5,9 +5,11 @@ import {
   WorkoutPlan
   } from '../../types/workout';
 import {
+  createWorkoutPlan,
   finishWorkout,
   incrementWorkoutIndex,
   memoizeExercises,
+  setWorkoutPlanInProgress,
   updateWorkoutExercises,
   updateWorkoutPlan
   } from '../workoutFactory';
@@ -110,6 +112,30 @@ describe('workoutFactory', () => {
 
       const updatedWorkout: Workout = updateWorkoutExercises(newWorkout, exercises)
       expect(updatedWorkout.exercises.length).toBe(2)
+    })
+  })
+
+  describe('createWorkoutPlan', () => {
+    it('Returns a new workoutPlan', () => {
+      const newWorkoutPlan: WorkoutPlan = createWorkoutPlan(1, workouts)
+      expect(newWorkoutPlan.workoutIndex).toBe(0)
+      expect(newWorkoutPlan.workoutInProgress).toBe(false)
+      expect(newWorkoutPlan.daysPerWeek).toBe(1)
+      expect(newWorkoutPlan.workouts.length).toBe(workouts.length)
+    })
+  })
+
+  describe('setWorkoutPlanInProgress', () => {
+    it('Returns the same workout plan with workoutInProgress set to true', () => {
+      const newWorkoutPlan: WorkoutPlan = {
+        ...workoutPlan,
+        workoutInProgress: false
+      }
+      const updatedWorkoutPlan: WorkoutPlan = setWorkoutPlanInProgress(newWorkoutPlan)
+      expect(updatedWorkoutPlan.workoutInProgress).toBe(true)
+      expect(updatedWorkoutPlan.workoutIndex).toBe(newWorkoutPlan.workoutIndex)
+      expect(updatedWorkoutPlan.daysPerWeek).toBe(newWorkoutPlan.daysPerWeek)
+      expect(updatedWorkoutPlan.workouts.length).toBe(newWorkoutPlan.workouts.length)
     })
   })
 })

@@ -3,5 +3,6 @@ import Datastore from 'react-native-local-mongodb'
 import React from 'react'
 
 export const DatabaseContext = React.createContext({
-  db: new Datastore({ filename: 'workout-log.db', storage: AsyncStorage, autoload: true }),
+  logsStore: new Datastore({ filename: 'workout-log.db', storage: AsyncStorage, autoload: true }),
+  workoutPlanStore: new Datastore({ filename: 'workout-plan.db', storage: AsyncStorage, autoload: true }),
 })

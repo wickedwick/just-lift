@@ -1,14 +1,22 @@
-import ActionButton from '../components/ActionButton';
-import React from 'react';
-import { Button, Card, useTheme } from 'react-native-paper';
-import { removeItemAsync } from '../services/persistence';
-import { ScrollView, StyleSheet, Text } from 'react-native';
-import { StackScreenProps } from '@react-navigation/stack';
-import { TabOneParamList } from '../types/common';
+import ActionButton from '../components/ActionButton'
+import React from 'react'
+import { Button, Card, useTheme } from 'react-native-paper'
+import { ScrollView, StyleSheet, Text } from 'react-native'
+import { StackScreenProps } from '@react-navigation/stack'
+import { TabOneParamList } from '../types/common'
+import { DatabaseContext } from '../context/DatabaseContext'
+import { WorkoutPlanContext } from '../context/WorkoutPlanContext'
 
 const SettingsScreen = ({ navigation }: StackScreenProps<TabOneParamList, 'SettingsScreen'>): JSX.Element => {
   const { colors } = useTheme()
   const styles = createStyles(colors)
+  const { workoutPlanStore } = React.useContext(DatabaseContext)
+  const { setWorkoutPlan } = React.useContext(WorkoutPlanContext)
+
+  const handleRemoveWorkoutPlan = async () => {
+    await workoutPlanStore.removeAsync({})
+    setWorkoutPlan(null)
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -17,7 +25,7 @@ const SettingsScreen = ({ navigation }: StackScreenProps<TabOneParamList, 'Setti
       <Card style={styles.card}>
         <Card.Title title='Delete Workout Plan' subtitle="WARNING: This removes all data, including your log history" />
         <Card.Content>
-          <Button mode="contained" color="red" onPress={() => removeItemAsync('workoutPlan')}>Delete</Button>
+          <Button mode="contained" color="red" onPress={handleRemoveWorkoutPlan}>Delete</Button>
         </Card.Content>
       </Card>
 

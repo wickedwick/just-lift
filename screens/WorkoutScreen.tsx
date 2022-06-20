@@ -1,15 +1,16 @@
 import ActionButton from '../components/ActionButton';
 import ExerciseCounter from '../components/ExerciseCounter';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { changeWeight } from '../services/exerciseFactory';
 import { finishWorkout, incrementWorkoutIndex, updateWorkoutExercises, updateWorkoutPlan } from '../services/workoutFactory';
-import { getItemAsync, setItemAsync } from '../services/persistence';
 import { Log, Workout, WorkoutPlan } from '../types/workout';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { TabOneParamList } from '../types/common';
 import { useTheme } from 'react-native-paper';
 import { DatabaseContext } from '../context/DatabaseContext';
+import { MongoDocument } from 'react-native-local-mongodb';
+import { WorkoutPlanContext } from '../context/WorkoutPlanContext';
 
 const emptyWorkout: Workout = {
   id: '',
@@ -19,19 +20,15 @@ const emptyWorkout: Workout = {
 const WorkoutScreen = ({
   navigation
 }: StackScreenProps<TabOneParamList, 'WorkoutScreen'>): JSX.Element => {
-  const [workout, setWorkout] = React.useState<Workout>(emptyWorkout)
-  const [workoutPlan, setWorkoutPlan] = React.useState<WorkoutPlan | null>(null)
-  const [logs, setLogs] = React.useState<Log[]>([])
+  const [workout, setWorkout] = useState<Workout>(emptyWorkout)
+  const [logs, setLogs] = useState<Log[]>([])
   const { colors } = useTheme()
   const styles = createStyles(colors)
-  const { db } = React.useContext(DatabaseContext)
+  const { logsStore, workoutPlanStore } = useContext(DatabaseContext)
+  const { workoutPlan, setWorkoutPlan } = useContext(WorkoutPlanContext)
 
   useEffect(() => {
-    getItemAsync<WorkoutPlan>('workoutPlan').then(value => {
-      const workoutPlan = value
-      setWorkoutPlan(workoutPlan)
-      setWorkout(workoutPlan?.workouts[workoutPlan?.workoutIndex] || emptyWorkout)
-    })
+    setWorkout(workoutPlan?.workouts[workoutPlan?.workoutIndex] || emptyWorkout)
   }, [])
 
   const setLogData = (log: Log) => {
@@ -57,9 +54,14 @@ const WorkoutScreen = ({
     const workouts: Workout[] | undefined = finishWorkout(workoutPlan?.workouts as Workout[], workout)    
     const newWorkoutPlan: WorkoutPlan = updateWorkoutPlan(workoutPlan, workouts)
 
+    if (workoutPlan) {
+      await workoutPlanStore.removeAsync({})
+    }
+
+    await logsStore.insertAsync(logs)
+    await workoutPlanStore.insertAsync(newWorkoutPlan)
+    
     setWorkoutPlan(newWorkoutPlan)
-    await setItemAsync<WorkoutPlan>('workoutPlan', newWorkoutPlan)
-    await db.insertAsync(logs)
     navigation.reset({ routes: [{ name: 'BlankMenuScreen' }] })
   }
 

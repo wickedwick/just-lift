@@ -47,12 +47,19 @@ export const updateWorkoutPlan = (workoutPlan: WorkoutPlan | null, workouts: Wor
   return newWorkoutPlan
 }
 
-export const createWorkoutPlan = (): WorkoutPlan => {
+export const createWorkoutPlan = (daysPerWeek: number, workouts: Workout[]): WorkoutPlan => {
   return {
-    workouts: [],
-    daysPerWeek: 1,
+    workouts,
+    daysPerWeek,
     workoutIndex: 0,
     workoutInProgress: false,
+  }
+}
+
+export const setWorkoutPlanInProgress = (workoutPlan: WorkoutPlan): WorkoutPlan => {
+  return {
+    ...workoutPlan,
+    workoutInProgress: true,
   }
 }
 

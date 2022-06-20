@@ -1,41 +1,34 @@
 import ActionButton from '../components/ActionButton';
-import React, { useEffect } from 'react';
-import { getItemAsync, setItemAsync } from '../services/persistence';
+import React, { useContext } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { setWorkoutPlanInProgress } from '../services/workoutFactory';
 import { StackScreenProps } from '@react-navigation/stack';
 import { TabOneParamList } from '../types/common';
-import { Workout, WorkoutPlan } from '../types/workout';
+import { WorkoutPlan } from '../types/workout';
+import { WorkoutPlanContext } from '../context/WorkoutPlanContext';
+import { DatabaseContext } from '../context/DatabaseContext';
 
 export default function BlankMenu({
   navigation
 }: StackScreenProps<TabOneParamList, 'BlankMenuScreen'>): JSX.Element {
-  const [workouts, setWorkouts] = React.useState<Workout[]>([])
-  const [workoutPlan, setWorkoutPlan] = React.useState<WorkoutPlan | null>(null)
-  
-  useEffect(() => {
-    getItemAsync<WorkoutPlan>('workoutPlan').then(value => {
-      const workoutPlan: WorkoutPlan = value
-      setWorkoutPlan(workoutPlan)
-      setWorkouts(workoutPlan?.workouts || [])
-    })
-  }, [])
+  const { workoutPlan, setWorkoutPlan } = useContext(WorkoutPlanContext)
+  const { workoutPlanStore } = useContext(DatabaseContext)
 
-  const handleStartWorkout = () => {
-    const newWorkoutPlan: WorkoutPlan = {
-      workouts: workouts,
-      daysPerWeek: workoutPlan?.daysPerWeek || 1,
-      workoutIndex: workoutPlan?.workoutIndex || 0,
-      workoutInProgress: true,
+  const handleStartWorkout = async () => {
+    const newWorkoutPlan: WorkoutPlan = setWorkoutPlanInProgress(workoutPlan as WorkoutPlan)
+
+    if (workoutPlan) {
+      await workoutPlanStore.removeAsync({})
     }
 
-    setItemAsync<WorkoutPlan>('workoutPlan', newWorkoutPlan)
+    await workoutPlanStore.insertAsync(newWorkoutPlan)
     setWorkoutPlan(newWorkoutPlan)
     navigation.navigate('WorkoutScreen')
   }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {workouts.length === 0 && (
+      {(!workoutPlan || workoutPlan?.workouts.length === 0) && (
         <View>
           <ActionButton
             contained
@@ -53,7 +46,7 @@ export default function BlankMenu({
         </View>
       )}
 
-      {workouts.length > 0 && (
+      {workoutPlan && workoutPlan?.workouts.length > 0 && (
         <View>
           {!workoutPlan?.workoutInProgress && (
             <ActionButton

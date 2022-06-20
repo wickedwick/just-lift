@@ -1,8 +1,9 @@
 import ActionButton from '../components/ActionButton';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import ExerciseCard from '../components/ExerciseCard';
 import ExerciseForm from '../components/ExerciseForm';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { createWorkoutPlan } from '../services/workoutFactory';
+import { DatabaseContext } from '../context/DatabaseContext';
 import { Exercise, Workout, WorkoutPlan } from '../types/workout';
 import {
   ScrollView,
@@ -12,7 +13,9 @@ import {
   } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { TabOneParamList } from '../types/common';
+import { updateExercises } from '../services/exerciseFactory';
 import { useTheme } from 'react-native-paper';
+import { WorkoutPlanContext } from '../context/WorkoutPlanContext';
 
 export default function CreateWorkoutScreen({
   navigation
@@ -22,14 +25,30 @@ export default function CreateWorkoutScreen({
     exercises: [],
   }
 
-  const [workoutIndex, setWorkoutIndex] = React.useState(0)
-  const [workouts, setWorkouts] = React.useState([emptyWorkout])
-  const [showExerciseForm, setShowExerciseForm] = React.useState(false)
-  const [selectedExercise, setSelectedExercise] = React.useState<Exercise | null>(null)
+  const [workoutIndex, setWorkoutIndex] = useState(0)
+  const [workouts, setWorkouts] = useState([emptyWorkout])
+  const [showExerciseForm, setShowExerciseForm] = useState(false)
+  const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null)
   const { colors } = useTheme()
   const styles = createStyles(colors)
+  
+  const { workoutPlanStore } = useContext(DatabaseContext)
+  const { workoutPlan, setWorkoutPlan } = useContext(WorkoutPlanContext)
 
-  const onSubmit = (exercise: Workout['exercises'][0]) => {
+  useEffect(() => {
+    if (!workoutPlan) {
+      const newWorkoutPlan = createWorkoutPlan(1, workouts)
+      setWorkoutPlan(newWorkoutPlan)
+      setWorkouts(newWorkoutPlan.workouts)
+      setWorkoutIndex(newWorkoutPlan.workoutIndex)
+      return
+    }
+
+    setWorkouts(workoutPlan?.workouts)
+    setWorkoutIndex(workoutPlan?.workoutIndex)
+  }, [])
+
+  const onSubmit = (exercise: Exercise) => {
     if (selectedExercise) {
       editExercise(exercise)
       return
@@ -46,19 +65,21 @@ export default function CreateWorkoutScreen({
       return
     }
 
+    if (!workouts.length) {
+      const newWorkout: Workout = {
+        id: '',
+        exercises: []
+      }
+      setWorkouts([newWorkout])
+    }
+
     const newWorkouts = [...workouts]
-      newWorkouts[workoutIndex].exercises = workouts[workoutIndex].exercises.map(ex => {
-        if (ex.name === selectedExercise.name) {
-          return exercise
-        }
-
-        return ex
-      })
-
-      setWorkouts(newWorkouts)
-      setSelectedExercise(null)
-      setShowExerciseForm(false)
-      return
+    newWorkouts[workoutIndex].exercises = updateExercises(workouts[workoutIndex].exercises, exercise)
+    
+    setWorkouts(newWorkouts)
+    setSelectedExercise(null)
+    setShowExerciseForm(false)
+    return
   }
 
   const onRemoveExercise = (index: number) => {
@@ -86,24 +107,15 @@ export default function CreateWorkoutScreen({
   }
   
   const onSavePress = async () => {
-    const newWorkoutPlan: WorkoutPlan = {
-      workouts: workouts,
-      daysPerWeek: 3,
-      workoutIndex: 0,
-      workoutInProgress: false,
-      logs: [],
+    const newWorkoutPlan: WorkoutPlan = createWorkoutPlan(3, workouts)
+
+    if (workoutPlan) {
+      await workoutPlanStore.removeAsync({})
     }
 
-    const jsonValue = JSON.stringify(newWorkoutPlan)
-    await AsyncStorage.setItem('workoutPlan', jsonValue)
+    await workoutPlanStore.insertAsync(newWorkoutPlan)
+    setWorkoutPlan(newWorkoutPlan)
   }
-
-  useEffect(() => {
-    AsyncStorage.getItem('workoutPlan').then(value => {
-      const workoutPlan = JSON.parse(value || 'null')
-      setWorkouts(workoutPlan?.workouts || [emptyWorkout])
-    })
-  }, [])
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -139,12 +151,12 @@ export default function CreateWorkoutScreen({
 
       {!showExerciseForm && (
         <ActionButton
-          onPress={() => { setShowExerciseForm(true) }}
+          onPress={() => setShowExerciseForm(true)}
           text="Add Exercise"
         />
       )}
 
-      {!showExerciseForm && workoutIndex === workouts.length - 1 && (
+      {!showExerciseForm && workoutIndex === workouts.length -1 && (
         <ActionButton
           onPress={onAddWorkout}
           text="Add Workout"
