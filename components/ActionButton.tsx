@@ -9,6 +9,7 @@ const ActionButton = (props: ActionButtonProps): JSX.Element => {
       mode={props.contained ? 'contained' : 'text'}
       onPress={props.onPress}
       style={props.style}
+      labelStyle={props.labelStyle}
     >
       {props.text}
     </Button>

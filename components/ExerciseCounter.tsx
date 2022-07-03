@@ -9,7 +9,8 @@ import { createLog } from '../services/logFactory';
 import { ExerciseCounterProps } from '../types/common';
 import { getNumberOrDefault } from '../services/utils';
 import { Log, WeightUnit } from '../types/workout';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import ActionButton from './ActionButton';
 
 const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
   const [counts, setCounts] = React.useState<number[]>([])
@@ -67,20 +68,23 @@ const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
           onLongPress={() => { setIsEditingWeight(!isEditingWeight) }}
         >
           {isEditingWeight ? (
-            <>
+            <View style={styles.flexContainer}>
               <TextInput
                 keyboardType={'numeric'}
                 label={`Weight`}
                 onChangeText={(text) => { setWeight(getNumberOrDefault(text), exercise.name) }}
-                style={styles.textInput}
+                style={{ ...styles.textInput, width: '75%' }}
                 value={exercise.weight.toString()}
               />
-              <Button
+              <ActionButton
+                contained
+                icon="check"
+                labelStyle={{ fontSize: 20, textAlign: 'center' }}
                 onPress={() => { setIsEditingWeight(!isEditingWeight) }}
-              >
-                Done
-              </Button>
-            </>
+                style={{ alignSelf: 'center', padding: 3 }}
+                text=""
+              />
+            </View>
           ) : (
             <Text style={styles.weightLabel}>{exercise.weight} {exercise.weightUnit === WeightUnit.Kg ? 'Kg' : 'Lbs'}</Text>
           )}
@@ -100,14 +104,17 @@ const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
                   keyboardType={'numeric'}
                   label={`Reps`}
                   onChangeText={(text) => { handleRepsChange(text, index) }}
-                  style={styles.textInput}
+                  style={{ ...styles.textInput, marginBottom: 0 }}
                   value={counts[index]?.toString()}
                 />
-                <Button
+                <ActionButton
+                  contained
+                  icon="check"
+                  labelStyle={{ fontSize: 20, textAlign: 'center' }}
                   onPress={() => { handleRepsEditingChange() }}
-                >
-                  ✓
-                </Button>
+                  style={{ alignSelf: 'center', padding: 3, marginTop: 0 }}
+                  text=""
+                />
               </>
             ) : (
               <Button
@@ -177,6 +184,11 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     marginBottom: 10,
     marginRight: 10,
+  },
+  weightTextInput: {
+    marginBottom: 10,
+    marginTop: 10,
+    padding: 3,
   },
 })
 

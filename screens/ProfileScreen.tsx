@@ -34,13 +34,6 @@ export const ProfileScreen = (): JSX.Element => {
   return (
     <ScrollView style={styles.container}>
       <View>
-        <Text style={styles.heading}>My Profile</Text>
-        
-        <Text style={styles.text}>
-          Edit your profile information here.
-        </Text>
-      </View>
-      <View>
         <Text style={styles.heading}>My Workouts</Text>
         
         <Text style={styles.text}>

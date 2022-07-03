@@ -55,12 +55,12 @@ const App = (): JSX.Element => {
               <Stack.Screen
                 name='BlankMenuScreen'
                 component={BlankMenuScreen}
-                options={{ title: 'Welcome' }}
+                options={{ title: 'Just Lift' }}
               />
               <Stack.Screen
                 name='CreateWorkoutScreen'
                 component={CreateWorkoutScreen}
-                options={{ title: 'Create a Workout' }}
+                options={{ title: 'Setup Your Workout' }}
               />
               <Stack.Screen
                 name='SelectWorkoutScreen'
@@ -70,7 +70,7 @@ const App = (): JSX.Element => {
               <Stack.Screen
                 name='WorkoutScreen'
                 component={WorkoutScreen}
-                options={{ title: 'Start Workout' }}
+                options={{ title: 'Workout' }}
               />
               <Stack.Screen
                 name='SettingsScreen'

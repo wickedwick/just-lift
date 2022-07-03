@@ -1,4 +1,5 @@
 import { Exercise, Log, WorkoutPlan } from './workout';
+import { StyleProp, TextStyle, ViewStyle } from 'react-native';
 
 export type RootStackParamList = {
   Root: undefined,
@@ -50,10 +51,11 @@ export type LogCardProps = {
 
 export type ActionButtonProps = {
   onPress: () => void
-  text: string
   contained?: boolean
   icon?: string
-  style?: any
+  labelStyle?: StyleProp<TextStyle>
+  style?: StyleProp<ViewStyle>
+  text: string
 }
 
 export type RadioButtonProps = {

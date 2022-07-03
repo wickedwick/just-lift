@@ -1,16 +1,26 @@
 import ActionButton from '../components/ActionButton';
 import React, { useContext } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { DatabaseContext } from '../context/DatabaseContext';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
+  } from 'react-native';
 import { setWorkoutPlanInProgress } from '../services/workoutFactory';
 import { StackScreenProps } from '@react-navigation/stack';
 import { TabOneParamList } from '../types/common';
+import { useTheme } from 'react-native-paper';
 import { WorkoutPlan } from '../types/workout';
 import { WorkoutPlanContext } from '../context/WorkoutPlanContext';
-import { DatabaseContext } from '../context/DatabaseContext';
 
 export default function BlankMenu({
   navigation
 }: StackScreenProps<TabOneParamList, 'BlankMenuScreen'>): JSX.Element {
+  const { colors } = useTheme()
+  const styles = createStyles(colors)
+
   const { workoutPlan, setWorkoutPlan } = useContext(WorkoutPlanContext)
   const { workoutPlanStore } = useContext(DatabaseContext)
 
@@ -28,10 +38,20 @@ export default function BlankMenu({
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.logoContainer}>
+        <Text style={styles.title}>JUST LIFT</Text>
+        <Image
+          style={styles.logo}
+          source={require("../assets/adaptive-icon.png")}
+        />
+      </View>
+      
       {(!workoutPlan || workoutPlan?.workouts.length === 0) && (
         <View>
           <ActionButton
             contained
+            icon="circle-edit-outline"
+            labelStyle={styles.buttonLabel}
             onPress={() => navigation.navigate('CreateWorkoutScreen')}
             style={styles.button}
             text="Create Workout"
@@ -51,6 +71,8 @@ export default function BlankMenu({
           {!workoutPlan?.workoutInProgress && (
             <ActionButton
               contained
+              icon="weight-lifter"
+              labelStyle={styles.buttonLabel}
               onPress={handleStartWorkout}
               style={styles.button}
               text="Start Workout"
@@ -60,6 +82,8 @@ export default function BlankMenu({
           {workoutPlan?.workoutInProgress && (
             <ActionButton
               contained
+              icon="weight-lifter"
+              labelStyle={styles.buttonLabel}
               onPress={() => navigation.navigate('WorkoutScreen')}
               style={styles.button}
               text="Continue Workout"
@@ -68,6 +92,8 @@ export default function BlankMenu({
 
           <ActionButton
             contained
+            icon="circle-edit-outline"
+            labelStyle={styles.buttonLabel}
             onPress={() => navigation.navigate('CreateWorkoutScreen')}
             style={styles.button}
             text="Edit Workout"
@@ -76,12 +102,16 @@ export default function BlankMenu({
       )}
 
       <ActionButton
+        icon="cog"
+        labelStyle={styles.buttonLabel}
         onPress={() => navigation.navigate('SettingsScreen')}
         style={styles.button}
         text="Settings"
       />
 
       <ActionButton
+        icon="account"
+        labelStyle={styles.buttonLabel}
         onPress={() => navigation.navigate('ProfileScreen')}
         style={styles.button}
         text="Profile"
@@ -90,11 +120,30 @@ export default function BlankMenu({
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-  },
+const createStyles = (colors: ReactNativePaper.ThemeColors) => StyleSheet.create({
   button: {
     marginTop: 10,
   },
+  buttonLabel: {
+    fontSize: 20,
+  },
+  container: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  logo: {
+    height: 100,
+    margin: 0,
+    resizeMode: "contain",
+    width: 180,
+  },
+  logoContainer: {
+    alignItems: 'center',
+  },
+  title: {
+    color: colors.text,
+    fontSize: 50,
+    marginBottom: 0,
+  }
 })
