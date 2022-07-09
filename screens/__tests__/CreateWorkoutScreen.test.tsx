@@ -1,11 +1,9 @@
 import ActionButton from '../../components/ActionButton'
 import Adapter from 'enzyme-adapter-react-16'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import CreateWorkoutScreen from '../CreateWorkoutScreen'
 import React from 'react'
 import { configure, shallow } from 'enzyme'
 import { Text } from 'react-native'
-import { DatabaseContext } from '../../context/DatabaseContext'
 
 configure({ adapter: new Adapter() })
 

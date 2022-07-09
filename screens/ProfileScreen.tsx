@@ -1,5 +1,9 @@
+import Datastore, { MongoDocument } from 'react-native-local-mongodb'
 import LogCard from '../components/LogCard'
 import React, { useEffect } from 'react'
+import { createStore } from '../services/data'
+import { DataStoreType } from '../types/common'
+import { Log } from '../types/workout'
 import {
   ScrollView,
   StyleSheet,
@@ -7,18 +11,17 @@ import {
   View
   } from 'react-native'
 import { useTheme } from 'react-native-paper'
-import { Log } from '../types/workout'
-import { DatabaseContext } from '../context/DatabaseContext'
-import { MongoDocument } from 'react-native-local-mongodb'
 
 export const ProfileScreen = (): JSX.Element => {
   const [logs, setLogs] = React.useState<Log[]>([])
+  
   const { colors } = useTheme()
   const styles = createStyles(colors)
-  const { logsStore: db } = React.useContext(DatabaseContext)
+  
+  const logStore: Datastore = createStore(DataStoreType.Logs)
   
   useEffect(() => {
-    db.find({})
+    logStore.find({})
       .sort({ date: -1 })
       .limit(10)
       .exec((err: Error | null, docs: MongoDocument[]) => {

@@ -1,6 +1,8 @@
 import ActionButton from '../components/ActionButton';
+import Datastore from 'react-native-local-mongodb';
 import React, { useContext } from 'react';
-import { DatabaseContext } from '../context/DatabaseContext';
+import { createStore } from '../services/data';
+import { DataStoreType, TabOneParamList } from '../types/common';
 import {
   Image,
   ScrollView,
@@ -10,7 +12,6 @@ import {
   } from 'react-native';
 import { setWorkoutPlanInProgress } from '../services/workoutFactory';
 import { StackScreenProps } from '@react-navigation/stack';
-import { TabOneParamList } from '../types/common';
 import { useTheme } from 'react-native-paper';
 import { WorkoutPlan } from '../types/workout';
 import { WorkoutPlanContext } from '../context/WorkoutPlanContext';
@@ -18,13 +19,13 @@ import { WorkoutPlanContext } from '../context/WorkoutPlanContext';
 export default function BlankMenu({
   navigation
 }: StackScreenProps<TabOneParamList, 'BlankMenuScreen'>): JSX.Element {
+  const { workoutPlan, setWorkoutPlan } = useContext(WorkoutPlanContext)
+  const workoutPlanStore: Datastore = createStore(DataStoreType.WorkoutPlan)
+
   const { colors } = useTheme()
   const styles = createStyles(colors)
 
-  const { workoutPlan, setWorkoutPlan } = useContext(WorkoutPlanContext)
-  const { workoutPlanStore } = useContext(DatabaseContext)
-
-  const handleStartWorkout = async () => {
+  const onStartWorkout = async () => {
     const newWorkoutPlan: WorkoutPlan = setWorkoutPlanInProgress(workoutPlan as WorkoutPlan)
 
     if (workoutPlan) {
@@ -73,7 +74,7 @@ export default function BlankMenu({
               contained
               icon="weight-lifter"
               labelStyle={styles.buttonLabel}
-              onPress={handleStartWorkout}
+              onPress={onStartWorkout}
               style={styles.button}
               text="Start Workout"
             />

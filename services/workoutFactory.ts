@@ -69,3 +69,8 @@ export const updateWorkoutExercises = (workout: Workout, exercises: Exercise[]):
     exercises: exercises,
   }
 }
+
+export const emptyWorkout: Workout = {
+  id: 'A',
+  exercises: [],
+}

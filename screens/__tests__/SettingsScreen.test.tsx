@@ -1,10 +1,9 @@
-import Adapter from 'enzyme-adapter-react-16';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React from 'react';
-import SettingsScreen from '../SettingsScreen';
-import { Button } from 'react-native-paper';
-import { configure, render, shallow } from 'enzyme';
-import { DatabaseContext } from '../../context/DatabaseContext';
+import Adapter from 'enzyme-adapter-react-16'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import React from 'react'
+import SettingsScreen from '../SettingsScreen'
+import { Button } from 'react-native-paper'
+import { configure, shallow } from 'enzyme'
 
 configure({ adapter: new Adapter() })
 
@@ -30,9 +29,7 @@ describe('<SettingsScreen />', () => {
   it('Handles "Delete Workout Plan button" press', () => {
     const spy = jest.spyOn(AsyncStorage, 'removeItem')
     const wrapper = shallow(
-      <DatabaseContext.Provider value={mockContext}>
-        <SettingsScreen {...props} />
-      </DatabaseContext.Provider>
+      <SettingsScreen {...props} />
     )
 
     const removeWorkoutPlanButton = wrapper.dive().find(Button).at(0)

@@ -1,9 +1,10 @@
-import React from 'react';
-import { Checkbox as PaperCheckbox, useTheme } from 'react-native-paper';
-import { CheckboxProps } from '../types/common';
-import { StyleSheet, View } from 'react-native';
+import React from 'react'
+import { Checkbox as PaperCheckbox, useTheme } from 'react-native-paper'
+import { CheckboxProps } from '../types/common'
+import { StyleSheet, View } from 'react-native'
 
 const Checkbox = (props: CheckboxProps): JSX.Element => {
+  const { label, status, onPress } = props
   const { colors } = useTheme()
 
   return (
@@ -11,9 +12,9 @@ const Checkbox = (props: CheckboxProps): JSX.Element => {
       <View style={styles.checkbox}>
         <PaperCheckbox.Item
           color={colors.primary}
-          label={props.label}
-          onPress={props.onPress}
-          status={props.status}
+          label={label}
+          onPress={onPress}
+          status={status}
         />
       </View>
     </View>

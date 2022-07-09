@@ -1,39 +1,34 @@
 import ActionButton from '../components/ActionButton';
+import Datastore from 'react-native-local-mongodb';
 import ExerciseCard from '../components/ExerciseCard';
 import ExerciseForm from '../components/ExerciseForm';
+import PagingControls from '../components/PagingControls';
 import React, { useContext, useEffect, useState } from 'react';
-import { createWorkoutPlan } from '../services/workoutFactory';
-import { DatabaseContext } from '../context/DatabaseContext';
-import { Exercise, Workout, WorkoutPlan } from '../types/workout';
+import { createStore } from '../services/data';
+import { createWorkoutPlan, emptyWorkout } from '../services/workoutFactory';
+import { DataStoreType, TabOneParamList } from '../types/common';
+import { Exercise, WorkoutPlan } from '../types/workout';
 import {
   ScrollView,
   StyleSheet,
-  Text,
   View
   } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
-import { TabOneParamList } from '../types/common';
 import { updateExercises } from '../services/exerciseFactory';
-import { useTheme } from 'react-native-paper';
 import { WorkoutPlanContext } from '../context/WorkoutPlanContext';
 
 export default function CreateWorkoutScreen({
   navigation
 }: StackScreenProps<TabOneParamList, 'CreateWorkoutScreen'>): JSX.Element {
-  const emptyWorkout: Workout = {
-    id: 'A',
-    exercises: [],
-  }
-
+  const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null)
+  const [showExerciseForm, setShowExerciseForm] = useState(false)
   const [workoutIndex, setWorkoutIndex] = useState(0)
   const [workouts, setWorkouts] = useState([emptyWorkout])
-  const [showExerciseForm, setShowExerciseForm] = useState(false)
-  const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null)
-  const { colors } = useTheme()
-  const styles = createStyles(colors)
   
-  const { workoutPlanStore } = useContext(DatabaseContext)
   const { workoutPlan, setWorkoutPlan } = useContext(WorkoutPlanContext)
+  const workoutPlanStore: Datastore = createStore(DataStoreType.WorkoutPlan)
+
+  const styles = createStyles()
 
   useEffect(() => {
     if (!workoutPlan) {
@@ -48,7 +43,7 @@ export default function CreateWorkoutScreen({
     setWorkoutIndex(workoutPlan?.workoutIndex)
   }, [])
 
-  const onSubmit = (exercise: Exercise) => {
+  const onExerciseFormSubmit = (exercise: Exercise) => {
     if (selectedExercise) {
       editExercise(exercise)
       return
@@ -66,11 +61,7 @@ export default function CreateWorkoutScreen({
     }
 
     if (!workouts.length) {
-      const newWorkout: Workout = {
-        id: '',
-        exercises: []
-      }
-      setWorkouts([newWorkout])
+      setWorkouts([emptyWorkout])
     }
 
     const newWorkouts = [...workouts]
@@ -79,7 +70,6 @@ export default function CreateWorkoutScreen({
     setWorkouts(newWorkouts)
     setSelectedExercise(null)
     setShowExerciseForm(false)
-    return
   }
 
   const onRemoveExercise = (index: number) => {
@@ -120,29 +110,11 @@ export default function CreateWorkoutScreen({
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {showExerciseForm && (
-        <ExerciseForm exercise={selectedExercise || undefined} onSubmit={onSubmit} onCancel={() => { setShowExerciseForm(false) }} />
+        <ExerciseForm exercise={selectedExercise || undefined} onSubmit={onExerciseFormSubmit} onCancel={() => { setShowExerciseForm(false) }} />
       )}
 
       {!showExerciseForm && (
-        <View style={styles.flexContainer}>
-          {workoutIndex > 0 && (
-            <ActionButton
-              contained
-              onPress={() => { setWorkoutIndex(workoutIndex - 1) }}
-              text="Previous"
-            />
-          )}
-
-          {workouts && <Text style={styles.heading}>Workout {workouts[workoutIndex]?.id}</Text>}
-          
-          {workoutIndex < workouts.length - 1 && (
-            <ActionButton
-              contained
-              onPress={() => { setWorkoutIndex(workoutIndex + 1) }}
-              text="Next"
-            />
-          )}
-        </View>
+        <PagingControls workoutIndex={workoutIndex} workouts={workouts} setWorkoutIndex={setWorkoutIndex} />
       )}
 
       {!showExerciseForm && workouts[workoutIndex]?.exercises.map((exercise, index) => (
@@ -189,7 +161,7 @@ export default function CreateWorkoutScreen({
   )
 }
 
-const createStyles = (colors: ReactNativePaper.ThemeColors) => StyleSheet.create({
+const createStyles = () => StyleSheet.create({
   container: {
     margin: 10,
     marginBottom: 35,
@@ -199,14 +171,4 @@ const createStyles = (colors: ReactNativePaper.ThemeColors) => StyleSheet.create
     borderTopRightRadius: 0,
     marginBottom: 10,
   },
-  flexContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  heading: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginTop: 5,
-    color: colors.text,
-  }
 })

@@ -1,19 +1,21 @@
 import ActionButton from '../components/ActionButton'
+import Datastore from 'react-native-local-mongodb'
 import React from 'react'
 import { Button, Card, useTheme } from 'react-native-paper'
+import { createStore } from '../services/data'
+import { DataStoreType, TabOneParamList } from '../types/common'
 import { ScrollView, StyleSheet, Text } from 'react-native'
 import { StackScreenProps } from '@react-navigation/stack'
-import { TabOneParamList } from '../types/common'
-import { DatabaseContext } from '../context/DatabaseContext'
 import { WorkoutPlanContext } from '../context/WorkoutPlanContext'
 
 const SettingsScreen = ({ navigation }: StackScreenProps<TabOneParamList, 'SettingsScreen'>): JSX.Element => {
   const { colors } = useTheme()
   const styles = createStyles(colors)
-  const { workoutPlanStore } = React.useContext(DatabaseContext)
+  
+  const workoutPlanStore: Datastore = createStore(DataStoreType.WorkoutPlan)
   const { setWorkoutPlan } = React.useContext(WorkoutPlanContext)
 
-  const handleRemoveWorkoutPlan = async () => {
+  const onRemoveWorkoutPlan = async () => {
     await workoutPlanStore.removeAsync({})
     setWorkoutPlan(null)
   }
@@ -25,7 +27,7 @@ const SettingsScreen = ({ navigation }: StackScreenProps<TabOneParamList, 'Setti
       <Card style={styles.card}>
         <Card.Title title='Delete Workout Plan' subtitle="WARNING: This removes all data, including your log history" />
         <Card.Content>
-          <Button mode="contained" color="red" onPress={handleRemoveWorkoutPlan}>Delete</Button>
+          <Button mode="contained" color="red" onPress={onRemoveWorkoutPlan}>Delete</Button>
         </Card.Content>
       </Card>
 
@@ -44,15 +46,6 @@ const createStyles = (colors: ReactNativePaper.ThemeColors) => StyleSheet.create
   container: {
     flex: 1,
     margin: 10,
-  },
-  input: {
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
-    marginBottom: 10,
-  },
-  flexContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   card: {
     marginTop: 5,

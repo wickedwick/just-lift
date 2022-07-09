@@ -1,4 +1,9 @@
-import { Exercise, Log, WorkoutPlan } from './workout';
+import {
+  Exercise,
+  Log,
+  Workout,
+  WorkoutPlan
+  } from './workout';
 import { StyleProp, TextStyle, ViewStyle } from 'react-native';
 
 export type RootStackParamList = {
@@ -72,4 +77,15 @@ export type CheckboxProps = {
 export type WorkoutPlanContextProps = {
   workoutPlan: WorkoutPlan | null
   setWorkoutPlan: (workoutPlan: WorkoutPlan | null) => void
+}
+
+export enum DataStoreType {
+  Logs,
+  WorkoutPlan
+}
+
+export type PagingControlsProps = {
+  workoutIndex: number
+  workouts: Workout[]
+  setWorkoutIndex: (value: React.SetStateAction<number>) => void
 }

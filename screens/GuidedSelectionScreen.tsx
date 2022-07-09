@@ -9,6 +9,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { TabOneParamList } from '../types/common';
 
+// TODO: WORK IN PROGRESS; SLATED FOR LATER VERSION
 export default function GuidedSelectionScreen({
   navigation
 }: StackScreenProps<TabOneParamList, 'GuidedSelectionScreen'>): JSX.Element {

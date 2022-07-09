@@ -1,25 +1,27 @@
-import ActionButton from '../components/ActionButton';
-import ExerciseCounter from '../components/ExerciseCounter';
-import React, { useContext, useEffect, useState } from 'react';
-import { Button, Dialog, List, Paragraph, useTheme } from 'react-native-paper';
-import { changeWeight } from '../services/exerciseFactory';
-import { DatabaseContext } from '../context/DatabaseContext';
+import ActionButton from '../components/ActionButton'
+import Datastore from 'react-native-local-mongodb'
+import ExerciseCounter from '../components/ExerciseCounter'
+import React, { useContext, useEffect, useState } from 'react'
+import { addOrUpdateLog } from '../services/logFactory'
+import { changeWeight } from '../services/exerciseFactory'
+import { createStore } from '../services/data'
+import { DataStoreType, TabOneParamList } from '../types/common'
+import { Dialog, List, useTheme } from 'react-native-paper'
 import {
   finishWorkout,
   incrementWorkoutIndex,
   updateWorkoutExercises,
   updateWorkoutPlan
-  } from '../services/workoutFactory';
-import { Log, Workout, WorkoutPlan } from '../types/workout';
+  } from '../services/workoutFactory'
+import { Log, Workout, WorkoutPlan } from '../types/workout'
 import {
   ScrollView,
   StyleSheet,
   Text,
   View
-  } from 'react-native';
-import { StackScreenProps } from '@react-navigation/stack';
-import { TabOneParamList } from '../types/common';
-import { WorkoutPlanContext } from '../context/WorkoutPlanContext';
+  } from 'react-native'
+import { StackScreenProps } from '@react-navigation/stack'
+import { WorkoutPlanContext } from '../context/WorkoutPlanContext'
 
 const emptyWorkout: Workout = {
   id: '',
@@ -36,33 +38,20 @@ const WorkoutScreen = ({
   const { colors } = useTheme()
   const styles = createStyles(colors)
   
-  const { logsStore, workoutPlanStore } = useContext(DatabaseContext)
+  const logsStore: Datastore = createStore(DataStoreType.Logs)
+  const workoutPlanStore: Datastore = createStore(DataStoreType.WorkoutPlan)
   const { workoutPlan, setWorkoutPlan } = useContext(WorkoutPlanContext)
 
   useEffect(() => {
     setWorkout(workoutPlan?.workouts[workoutPlan?.workoutIndex] || emptyWorkout)
   }, [])
 
-  const setLogData = (log: Log) => {
-    const newLog: Log = { ...log, date: new Date() }
-    let newLogs: Log[] = [...logs]
-    
-    if (logs.find(l => l.exerciseName === log.exerciseName)) {
-      newLogs = logs.map(log => {
-        if (log.exerciseName === newLog.exerciseName) {
-          return newLog
-        }
-
-        return log
-      })
-    } else {
-      newLogs.push(newLog)
-    }
-
+  const onSetLogData = (log: Log) => {
+    let newLogs: Log[] = addOrUpdateLog(log, logs)
     setLogs(newLogs)
   }
   
-  const handleFinishWorkout = async () => {
+  const onFinishWorkout = async () => {
     const workouts: Workout[] | undefined = finishWorkout(workoutPlan?.workouts as Workout[], workout)    
     const newWorkoutPlan: WorkoutPlan = updateWorkoutPlan(workoutPlan, workouts)
 
@@ -77,20 +66,18 @@ const WorkoutScreen = ({
     navigation.reset({ routes: [{ name: 'BlankMenuScreen' }] })
   }
 
-  const handleNextWorkout = () => {
+  const onNextWorkout = () => {
     if (!workoutPlan) {
       return
     }
     
-    const newWorkoutPlan: WorkoutPlan = {...workoutPlan, workoutIndex: incrementWorkoutIndex(workoutPlan)} as WorkoutPlan
-    
+    const newWorkoutPlan: WorkoutPlan = {...workoutPlan, workoutIndex: incrementWorkoutIndex(workoutPlan)} as WorkoutPlan 
     setWorkoutPlan(newWorkoutPlan)
-    setWorkout(newWorkoutPlan.workouts[newWorkoutPlan.workoutIndex])
-    
+    setWorkout(newWorkoutPlan.workouts[newWorkoutPlan.workoutIndex])    
     setLogs([])
   }
 
-  const handleChangeWeight = (weight: number, exerciseName: string) => {
+  const onChangeWeight = (weight: number, exerciseName: string) => {
     const newExersises = changeWeight(workout.exercises, exerciseName, weight)
     const newWorkout: Workout = updateWorkoutExercises(workout, newExersises)
     setWorkout(newWorkout)
@@ -114,18 +101,18 @@ const WorkoutScreen = ({
       </View>
 
       {workout.exercises.map(exercise => (
-        <ExerciseCounter key={exercise.name} exercise={exercise} setLogData={setLogData} setWeight={handleChangeWeight} />
+        <ExerciseCounter key={exercise.name} exercise={exercise} setLogData={onSetLogData} setWeight={onChangeWeight} />
       ))}
 
       <ActionButton
         style={styles.button}
         contained
-        onPress={handleFinishWorkout}
+        onPress={onFinishWorkout}
         text="Finish Workout"
       />
       
       <ActionButton
-        onPress={handleNextWorkout}
+        onPress={onNextWorkout}
         text="Skip Workout"
       />
 

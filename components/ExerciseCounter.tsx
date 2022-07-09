@@ -37,7 +37,7 @@ const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
     }
 
     setCounts(newCounts)
-    handleCreateLog()
+    handleCreateLog(newCounts)
   }
 
   const handleRepsChange = (text: string, index: number) => {
@@ -48,12 +48,12 @@ const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
   }
 
   const handleRepsEditingChange = () => {
-    handleCreateLog()
+    handleCreateLog(counts)
     setRepsEditingIndex(-1)
   }
 
-  const handleCreateLog = () => {
-    const newLog: Log = createLog(exercise, counts)
+  const handleCreateLog = (newCounts: number[]) => {
+    const newLog: Log = createLog(exercise, newCounts)
     setLogData(newLog)
   }
 
