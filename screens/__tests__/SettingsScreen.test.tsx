@@ -1,18 +1,21 @@
-import Adapter from 'enzyme-adapter-react-16'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17'
 import React from 'react'
 import SettingsScreen from '../SettingsScreen'
 import { Button } from 'react-native-paper'
-import { configure, shallow } from 'enzyme'
+import { configure, mount, shallow } from 'enzyme'
+import { WorkoutPlanContext } from '../../context/WorkoutPlanContext'
+import { createWorkoutPlan } from '../../services/workoutFactory'
+import { act } from 'react-test-renderer'
 
 configure({ adapter: new Adapter() })
 
 const props: any = {}
-const mockWorkoutPlanInsert = jest.fn()
+
 const mockContext: any = {
   workoutPlanStore: {
     find: jest.fn(),
-    insertAsync: mockWorkoutPlanInsert,
+    insertAsync: jest.fn(),
+    removeAsync: jest.fn(),
   },
   logsStore: {
     find: jest.fn(),
@@ -26,14 +29,17 @@ describe('<SettingsScreen />', () => {
     expect(wrapper.find('ScrollView').length).toBe(1)
   })
 
-  it('Handles "Delete Workout Plan button" press', () => {
-    const spy = jest.spyOn(AsyncStorage, 'removeItem')
-    const wrapper = shallow(
-      <SettingsScreen {...props} />
+  it('Handles "Delete Workout Plan button" press', async () => {
+    const mockSetWorkoutPlan = jest.fn()
+    const wrapper = mount(
+      <WorkoutPlanContext.Provider value={{ workoutPlan: createWorkoutPlan(3, []), setWorkoutPlan: mockSetWorkoutPlan }}>
+        <SettingsScreen {...props} />
+      </WorkoutPlanContext.Provider>
     )
 
-    const removeWorkoutPlanButton = wrapper.dive().find(Button).at(0)
-    removeWorkoutPlanButton.simulate('press')
-    expect(mockWorkoutPlanInsert).toHaveBeenCalled()
+    const removeWorkoutPlanButton: Button = wrapper.find(Button).at(0)
+    removeWorkoutPlanButton.prop('onPress')()
+    expect(mockSetWorkoutPlan).toHaveBeenCalled()
+    expect(mockSetWorkoutPlan).toHaveBeenCalledWith(null)
   })
 })

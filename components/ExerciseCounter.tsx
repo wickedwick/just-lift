@@ -1,22 +1,13 @@
-import React, { useEffect } from 'react';
-import {
-  Button,
-  Card,
-  Text,
-  TextInput
-  } from 'react-native-paper';
-import { createLog } from '../services/logFactory';
-import { ExerciseCounterProps } from '../types/common';
-import { getNumberOrDefault } from '../services/utils';
-import { Log, WeightUnit } from '../types/workout';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import ActionButton from './ActionButton';
+import React, { useEffect, useState } from 'react'
+import RepInputGroup from './RepInputGroup'
+import WeightEditor from './WeightEditor'
+import { Card, Text } from 'react-native-paper'
+import { ExerciseCounterProps } from '../types/common'
+import { StyleSheet } from 'react-native'
 
 const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
-  const [counts, setCounts] = React.useState<number[]>([])
   const { exercise, setLogData, setWeight } = props
-  const [isEditingWeight, setIsEditingWeight] = React.useState<boolean>(false)
-  const [repsEditingIndex, setRepsEditingIndex] = React.useState<number>(-1)
+  const [counts, setCounts] = useState<number[]>([])
 
   useEffect(() => {
     const newCounts = []
@@ -27,122 +18,31 @@ const ExerciseCounter = (props: ExerciseCounterProps): JSX.Element => {
     setCounts(newCounts)
   }, [exercise])
 
-  const handleChange = (index: number) => {
-    let newCounts = [...counts]
-
-    if (newCounts[index] > 0) {
-      newCounts[index]--
-    } else {
-      newCounts[index] = exercise.reps
-    }
-
-    setCounts(newCounts)
-    handleCreateLog(newCounts)
-  }
-
-  const handleRepsChange = (text: string, index: number) => {
-    const newReps = getNumberOrDefault(text)
-    const newCounts = [...counts]
-    newCounts[index] = newReps
-    setCounts(newCounts)
-  }
-
-  const handleRepsEditingChange = () => {
-    handleCreateLog(counts)
-    setRepsEditingIndex(-1)
-  }
-
-  const handleCreateLog = (newCounts: number[]) => {
-    const newLog: Log = createLog(exercise, newCounts)
-    setLogData(newLog)
-  }
-
   return (
     <Card style={styles.card}>
       <Card.Title title={exercise.name} />
       <Card.Content>
         <Text>{exercise.reps} reps</Text>
 
-        <TouchableOpacity
-          activeOpacity={0.6}
-          onLongPress={() => { setIsEditingWeight(!isEditingWeight) }}
-        >
-          {isEditingWeight ? (
-            <View style={styles.flexContainer}>
-              <TextInput
-                keyboardType={'numeric'}
-                label={`Weight`}
-                onChangeText={(text) => { setWeight(getNumberOrDefault(text), exercise.name) }}
-                style={{ ...styles.textInput, width: '75%' }}
-                value={exercise.weight.toString()}
-              />
-              <ActionButton
-                contained
-                icon="check"
-                labelStyle={{ fontSize: 20, textAlign: 'center' }}
-                onPress={() => { setIsEditingWeight(!isEditingWeight) }}
-                style={{ alignSelf: 'center', padding: 3 }}
-                text=""
-              />
-            </View>
-          ) : (
-            <Text style={styles.weightLabel}>{exercise.weight} {exercise.weightUnit === WeightUnit.Kg ? 'Kg' : 'Lbs'}</Text>
-          )}
-        </TouchableOpacity>
+        <WeightEditor
+          exercise={exercise}
+          setWeight={setWeight}
+        />
       </Card.Content>
 
       <Card.Content style={styles.flexContainer}>
-        {[...Array(exercise.sets)].map((_, index) => (
-          <TouchableOpacity
-            activeOpacity={0.6}
-            key={index}
-            onLongPress={() => { setRepsEditingIndex(index) }}
-          >
-            {repsEditingIndex === index ? (
-              <>
-                <TextInput
-                  keyboardType={'numeric'}
-                  label={`Reps`}
-                  onChangeText={(text) => { handleRepsChange(text, index) }}
-                  style={{ ...styles.textInput, marginBottom: 0 }}
-                  value={counts[index]?.toString()}
-                />
-                <ActionButton
-                  contained
-                  icon="check"
-                  labelStyle={{ fontSize: 20, textAlign: 'center' }}
-                  onPress={() => { handleRepsEditingChange() }}
-                  style={{ alignSelf: 'center', padding: 3, marginTop: 0 }}
-                  text=""
-                />
-              </>
-            ) : (
-              <Button
-                compact
-                key={index}
-                labelStyle={styles.buttonLabel}
-                mode='contained'
-                onPress={() => handleChange(index)}
-                onLongPress={() => { setRepsEditingIndex(index) }}
-                style={styles.input}
-              >
-                {counts[index]}
-              </Button>
-            )}
-          </TouchableOpacity>
-        ))}
+        <RepInputGroup
+          counts={counts}
+          exercise={exercise}
+          setCounts={setCounts}
+          setLogData={setLogData}
+        />
       </Card.Content>
     </Card>
   )
 }
 
 const styles = StyleSheet.create({
-  buttonLabel: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    alignContent: 'center',
-    margin: 0,
-  },
   card: {
     marginTop: 5,
     marginBottom: 5,
@@ -155,40 +55,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  input: {
-    marginBottom: 10,
-    marginTop: 10,
-    width: 50,
-    height: 50,
-    borderRadius: 50,
-    padding: 3,
-  },
-  removeButton: {
-  },
-  text: {
-    fontSize: 18,
-  },
-  textInput: {
-    marginBottom: 10,
-    marginTop: 10,
-    padding: 3,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  weightLabel: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    alignSelf: 'flex-end',
-    marginBottom: 10,
-    marginRight: 10,
-  },
-  weightTextInput: {
-    marginBottom: 10,
-    marginTop: 10,
-    padding: 3,
   },
 })
 

@@ -1,4 +1,4 @@
-import { getNumberOrDefault, derivedAmPm } from "../utils"
+import { createGroups, derivedAmPm, getNumberOrDefault } from "../utils"
 
 describe('utils', () => {
   // TODO: Figure out why we get invalid date in test
@@ -36,6 +36,20 @@ describe('utils', () => {
       const hh = 13
       const amPm = derivedAmPm(hh)
       expect(amPm).toBe('PM')
+    })
+  })
+
+  describe('createGroups', () => {
+    it('returns an array of arrays grouped into 3', () => {
+      const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      let groups = createGroups(arr, 3)
+      expect(groups).toEqual([[1, 2, 3], [4, 5, 6], [7, 8, 9] , [10]])
+
+      groups = createGroups(arr, 2)
+      expect(groups).toEqual([[1, 2], [3, 4], [5, 6], [7, 8], [9, 10]])
+
+      groups = createGroups(arr, 4)
+      expect(groups).toEqual([[1, 2, 3, 4], [5, 6, 7, 8], [9, 10]])
     })
   })
 })

@@ -16,8 +16,8 @@ const SettingsScreen = ({ navigation }: StackScreenProps<TabOneParamList, 'Setti
   const { setWorkoutPlan } = React.useContext(WorkoutPlanContext)
 
   const onRemoveWorkoutPlan = async () => {
-    await workoutPlanStore.removeAsync({})
     setWorkoutPlan(null)
+    await workoutPlanStore.removeAsync({})
   }
 
   return (

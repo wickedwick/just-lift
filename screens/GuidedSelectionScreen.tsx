@@ -39,8 +39,7 @@ export default function GuidedSelectionScreen({
   }
 
   const handleCreateWorkout = (): void => {
-    console.log('create workout')
-    createWorkoutPlan()
+    createWorkoutPlan(3, [])
   }
 
   return (

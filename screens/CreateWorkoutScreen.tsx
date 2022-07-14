@@ -1,21 +1,17 @@
-import ActionButton from '../components/ActionButton';
-import Datastore from 'react-native-local-mongodb';
-import ExerciseCard from '../components/ExerciseCard';
-import ExerciseForm from '../components/ExerciseForm';
-import PagingControls from '../components/PagingControls';
-import React, { useContext, useEffect, useState } from 'react';
-import { createStore } from '../services/data';
-import { createWorkoutPlan, emptyWorkout } from '../services/workoutFactory';
-import { DataStoreType, TabOneParamList } from '../types/common';
-import { Exercise, WorkoutPlan } from '../types/workout';
-import {
-  ScrollView,
-  StyleSheet,
-  View
-  } from 'react-native';
-import { StackScreenProps } from '@react-navigation/stack';
-import { updateExercises } from '../services/exerciseFactory';
-import { WorkoutPlanContext } from '../context/WorkoutPlanContext';
+import ActionButton from '../components/ActionButton'
+import Datastore from 'react-native-local-mongodb'
+import ExerciseCard from '../components/ExerciseCard'
+import ExerciseForm from '../components/ExerciseForm'
+import PagingControls from '../components/PagingControls'
+import React, { useContext, useEffect, useState } from 'react'
+import { createStore } from '../services/data'
+import { createWorkoutPlan, emptyWorkout } from '../services/workoutFactory'
+import { DataStoreType, TabOneParamList } from '../types/common'
+import { Exercise, Workout, WorkoutPlan } from '../types/workout'
+import { ScrollView, StyleSheet, View } from 'react-native'
+import { StackScreenProps } from '@react-navigation/stack'
+import { updateExercises } from '../services/exerciseFactory'
+import { WorkoutPlanContext } from '../context/WorkoutPlanContext'
 
 export default function CreateWorkoutScreen({
   navigation
@@ -24,24 +20,28 @@ export default function CreateWorkoutScreen({
   const [showExerciseForm, setShowExerciseForm] = useState(false)
   const [workoutIndex, setWorkoutIndex] = useState(0)
   const [workouts, setWorkouts] = useState([emptyWorkout])
-  
   const { workoutPlan, setWorkoutPlan } = useContext(WorkoutPlanContext)
   const workoutPlanStore: Datastore = createStore(DataStoreType.WorkoutPlan)
-
   const styles = createStyles()
 
   useEffect(() => {
     if (!workoutPlan) {
-      const newWorkoutPlan = createWorkoutPlan(1, workouts)
+      const newWorkoutPlan = createWorkoutPlan(workouts.length, workouts)
       setWorkoutPlan(newWorkoutPlan)
-      setWorkouts(newWorkoutPlan.workouts)
-      setWorkoutIndex(newWorkoutPlan.workoutIndex)
-      return
     }
-
-    setWorkouts(workoutPlan?.workouts)
-    setWorkoutIndex(workoutPlan?.workoutIndex)
+    
+    setLocalState(workoutPlan?.workouts, workoutPlan?.workoutIndex)
   }, [])
+
+  const setLocalState = (workouts: Workout[] | undefined, workoutIndex: number | undefined): void => {
+    if (workouts) {
+      setWorkouts(workouts)
+    }
+    
+    if (workoutIndex) {
+      setWorkoutIndex(workoutIndex)
+    }
+  }
 
   const onExerciseFormSubmit = (exercise: Exercise) => {
     if (selectedExercise) {
@@ -84,20 +84,19 @@ export default function CreateWorkoutScreen({
   }
 
   const onRemoveWorkout = () => {
-    setWorkouts(workouts.slice(0, workoutIndex).concat(workouts.slice(workoutIndex + 1)))
-    setWorkoutIndex(workoutIndex - 1)
+    const newWorkouts = workouts.slice(0, workoutIndex).concat(workouts.slice(workoutIndex + 1))
+    setLocalState(newWorkouts, workoutIndex - 1)
   }
 
   const onAddWorkout = () => {
     const newId = String.fromCharCode(workouts[workoutIndex].id.charCodeAt(workouts[workoutIndex].id.length - 1) + 1)
     const newWorkout = {...emptyWorkout, id: newId}
     
-    setWorkouts([...workouts, newWorkout])
-    setWorkoutIndex(workouts.length)
+    setLocalState([...workouts, newWorkout], workouts.length)
   }
   
   const onSavePress = async () => {
-    const newWorkoutPlan: WorkoutPlan = createWorkoutPlan(3, workouts)
+    const newWorkoutPlan: WorkoutPlan = createWorkoutPlan(workouts.length, workouts)
 
     if (workoutPlan) {
       await workoutPlanStore.removeAsync({})
@@ -117,7 +116,7 @@ export default function CreateWorkoutScreen({
         <PagingControls workoutIndex={workoutIndex} workouts={workouts} setWorkoutIndex={setWorkoutIndex} />
       )}
 
-      {!showExerciseForm && workouts[workoutIndex]?.exercises.map((exercise, index) => (
+      {!showExerciseForm && workouts[workoutIndex]?.exercises?.map((exercise, index) => (
         <ExerciseCard key={index} exercise={exercise} onEditPress={() => onEditExercise(index)} onRemovePress={() => onRemoveExercise(index)} />
       ))}
 

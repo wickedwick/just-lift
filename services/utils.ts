@@ -34,3 +34,11 @@ export const derivedAmPm = (hh: number): 'AM' | 'PM' => {
 
   return 'AM'
 }
+
+export const createGroups = (arr: any[], perGroup: number): any[] => {
+  const numGroups = Math.ceil(arr.length / perGroup)
+
+  return new Array(numGroups)
+    .fill('')
+    .map((_, i) => arr.slice(i * perGroup, (i + 1) * perGroup))
+}

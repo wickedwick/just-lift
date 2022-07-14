@@ -89,3 +89,15 @@ export type PagingControlsProps = {
   workouts: Workout[]
   setWorkoutIndex: (value: React.SetStateAction<number>) => void
 }
+
+export type WeightEditorProps = {
+  exercise: Exercise
+  setWeight: (weight: number, exerciseName: string) => void
+}
+
+export type RepInputGroupProps = {
+  counts: number[]
+  exercise: Exercise
+  setCounts: (value: React.SetStateAction<number[]>) => void
+  setLogData: (log: Log) => void
+}
