@@ -1,16 +1,18 @@
-import ActionButton from './ActionButton';
-import DropDown from 'react-native-paper-dropdown';
-import React from 'react';
-import { getNumberOrDefault } from '../services/utils';
-import { StyleSheet, View } from 'react-native';
+import ActionButton from './ActionButton'
+import DropDown from 'react-native-paper-dropdown'
+import React from 'react'
+import { getNumberOrDefault } from '../services/utils'
+import { StyleSheet, View } from 'react-native'
 import {
   Switch,
   Text,
   TextInput,
   useTheme
-  } from 'react-native-paper';
-import { WeightUnit } from '../types/workout';
-import { WorkoutFormProps } from '../types/common';
+  } from 'react-native-paper'
+import { WeightUnit } from '../types/workout'
+import { WorkoutFormProps } from '../types/common'
+import 'react-native-get-random-values'
+import { nanoid } from 'nanoid'
 
 const ExerciseForm = (props: WorkoutFormProps): JSX.Element => {
   const { exercise, onSubmit, onCancel } = props
@@ -33,6 +35,7 @@ const ExerciseForm = (props: WorkoutFormProps): JSX.Element => {
 
   const onSubmitPress = () => {
     onSubmit({
+      id: exercise?.id || nanoid(),
       name,
       overloadIncrement,
       progressiveOverload,

@@ -66,7 +66,7 @@ export default function CreateWorkoutScreen({
 
     const newWorkouts = [...workouts]
     newWorkouts[workoutIndex].exercises = updateExercises(workouts[workoutIndex].exercises, exercise)
-    
+
     setWorkouts(newWorkouts)
     setSelectedExercise(null)
     setShowExerciseForm(false)

@@ -2,7 +2,7 @@ import { Exercise } from '../types/workout'
 
 export const updateExercises = (exercises: Exercise[], exercise: Exercise): Exercise[] => {
   return exercises.map(e => {
-    if (e.name === exercise.name) {
+    if (e.id === exercise.id || e.name === exercise.name) {
       return exercise
     }
 
