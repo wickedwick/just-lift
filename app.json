@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Swapi",
-    "slug": "Swapi",
+    "name": "Just-Lift",
+    "slug": "just-lift-tracker",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
@@ -18,7 +18,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.wickedwick.Swapi"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,6 +29,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d9fdc4d4-78be-408a-bb73-b6a7f2a706c5"
+      }
     }
   }
 }
