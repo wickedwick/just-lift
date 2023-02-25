@@ -19,7 +19,7 @@ export default function CreateWorkoutScreen({
   const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null)
   const [showExerciseForm, setShowExerciseForm] = useState(false)
   const [workoutIndex, setWorkoutIndex] = useState(0)
-  const [workouts, setWorkouts] = useState([emptyWorkout])
+  const [workouts, setWorkouts] = useState([{ ...emptyWorkout }])
   const { workoutPlan, setWorkoutPlan } = useContext(WorkoutPlanContext)
   const workoutPlanStore: Datastore = createStore(DataStoreType.WorkoutPlan)
   const styles = createStyles()
@@ -61,7 +61,7 @@ export default function CreateWorkoutScreen({
     }
 
     if (!workouts.length) {
-      setWorkouts([emptyWorkout])
+      setWorkouts([{ ...emptyWorkout }])
     }
 
     const newWorkouts = [...workouts]
@@ -90,7 +90,7 @@ export default function CreateWorkoutScreen({
 
   const onAddWorkout = () => {
     const newId = String.fromCharCode(workouts[workoutIndex].id.charCodeAt(workouts[workoutIndex].id.length - 1) + 1)
-    const newWorkout = {...emptyWorkout, id: newId}
+    const newWorkout: Workout = { id: newId, exercises: []}
     
     setLocalState([...workouts, newWorkout], workouts.length)
   }
