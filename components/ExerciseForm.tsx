@@ -11,8 +11,8 @@ import {
   } from 'react-native-paper'
 import { WeightUnit } from '../types/workout'
 import { WorkoutFormProps } from '../types/common'
-import 'react-native-get-random-values'
 import { nanoid } from 'nanoid'
+import 'react-native-get-random-values'
 
 const ExerciseForm = (props: WorkoutFormProps): JSX.Element => {
   const { exercise, onSubmit, onCancel } = props

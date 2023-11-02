@@ -1,5 +1,5 @@
 export type Exercise = {
-  id: string,
+  id?: string,
   name: string
   sets: number
   reps: number

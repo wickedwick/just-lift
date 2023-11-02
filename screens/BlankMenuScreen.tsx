@@ -10,7 +10,7 @@ import {
   Text,
   View
   } from 'react-native';
-import { setWorkoutPlanInProgress } from '../services/workoutFactory';
+import { setWorkoutPlanInProgress } from '../services/workout';
 import { StackScreenProps } from '@react-navigation/stack';
 import { useTheme } from 'react-native-paper';
 import { WorkoutPlan } from '../types/workout';

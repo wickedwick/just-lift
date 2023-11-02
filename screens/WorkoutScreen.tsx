@@ -2,8 +2,8 @@ import ActionButton from '../components/ActionButton'
 import Datastore from 'react-native-local-mongodb'
 import ExerciseCounter from '../components/ExerciseCounter'
 import React, { useContext, useEffect, useState } from 'react'
-import { addOrUpdateLog } from '../services/logFactory'
-import { changeWeight } from '../services/exerciseFactory'
+import { addOrUpdateLog } from '../services/log'
+import { changeWeight } from '../services/exercise'
 import { createStore } from '../services/data'
 import { DataStoreType, TabOneParamList } from '../types/common'
 import { Dialog, List, useTheme } from 'react-native-paper'
@@ -12,7 +12,7 @@ import {
   incrementWorkoutIndex,
   updateWorkoutExercises,
   updateWorkoutPlan
-  } from '../services/workoutFactory'
+  } from '../services/workout'
 import { Log, Workout, WorkoutPlan } from '../types/workout'
 import {
   ScrollView,

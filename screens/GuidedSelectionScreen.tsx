@@ -2,7 +2,7 @@ import ActionButton from '../components/ActionButton';
 import Checkbox from '../components/Checkbox';
 import RadioButton from '../components/RadioButton';
 import React from 'react';
-import { createWorkoutPlan } from '../services/workoutFactory';
+import { createWorkoutPlan } from '../services/workout';
 import { getNumberOrDefault } from '../services/utils';
 import { RadioButton as PaperRadioButton, Text, TextInput } from 'react-native-paper';
 import { ScrollView, StyleSheet, View } from 'react-native';

@@ -1,173 +1,167 @@
-import ActionButton from '../components/ActionButton'
-import Datastore from 'react-native-local-mongodb'
-import ExerciseCard from '../components/ExerciseCard'
-import ExerciseForm from '../components/ExerciseForm'
-import PagingControls from '../components/PagingControls'
-import React, { useContext, useEffect, useState } from 'react'
-import { createStore } from '../services/data'
-import { createWorkoutPlan, emptyWorkout } from '../services/workoutFactory'
-import { DataStoreType, TabOneParamList } from '../types/common'
-import { Exercise, Workout, WorkoutPlan } from '../types/workout'
-import { ScrollView, StyleSheet, View } from 'react-native'
-import { StackScreenProps } from '@react-navigation/stack'
-import { updateExercises } from '../services/exerciseFactory'
-import { WorkoutPlanContext } from '../context/WorkoutPlanContext'
+import ActionButton from '../components/ActionButton';
+import Datastore from 'react-native-local-mongodb';
+import ExerciseCard from '../components/ExerciseCard';
+import ExerciseForm from '../components/ExerciseForm';
+import PagingControls from '../components/PagingControls';
+import React, { useContext, useEffect, useState } from 'react';
+import { createStore } from '../services/data';
+import { createWorkoutPlan } from '../services/workout';
+import { DataStoreType, TabOneParamList } from '../types/common';
+import { Exercise, Workout, WorkoutPlan } from '../types/workout';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { removeExercise, replaceExercise, updateExercises } from '../services/exercise';
+import { WorkoutPlanContext } from '../context/WorkoutPlanContext';
 
 export default function CreateWorkoutScreen({
-  navigation
+    navigation,
 }: StackScreenProps<TabOneParamList, 'CreateWorkoutScreen'>): JSX.Element {
-  const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null)
-  const [showExerciseForm, setShowExerciseForm] = useState(false)
-  const [workoutIndex, setWorkoutIndex] = useState(0)
-  const [workouts, setWorkouts] = useState([{ ...emptyWorkout }])
-  const { workoutPlan, setWorkoutPlan } = useContext(WorkoutPlanContext)
-  const workoutPlanStore: Datastore = createStore(DataStoreType.WorkoutPlan)
-  const styles = createStyles()
+    const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
+    const [showExerciseForm, setShowExerciseForm] = useState(false);
+    const [workoutIndex, setWorkoutIndex] = useState(0);
+    const { workoutPlan, setWorkoutPlan } = useContext(WorkoutPlanContext);
+    const workoutPlanStore: Datastore = createStore(DataStoreType.WorkoutPlan);
+    const styles = createStyles();
 
-  useEffect(() => {
-    if (!workoutPlan) {
-      const newWorkoutPlan = createWorkoutPlan(workouts.length, workouts)
-      setWorkoutPlan(newWorkoutPlan)
-    }
-    
-    setLocalState(workoutPlan?.workouts, workoutPlan?.workoutIndex)
-  }, [])
+    useEffect(() => {
+        if (!workoutPlan) {
+            const newWorkoutPlan = createWorkoutPlan(0, []);
+            setWorkoutPlan(newWorkoutPlan);
+        }
+    }, []);
 
-  const setLocalState = (workouts: Workout[] | undefined, workoutIndex: number | undefined): void => {
-    if (workouts) {
-      setWorkouts(workouts)
-    }
-    
-    if (workoutIndex) {
-      setWorkoutIndex(workoutIndex)
-    }
-  }
+    const onExerciseFormSubmit = (exercise: Exercise) => {
+        if (selectedExercise) {
+            replaceExercise(exercise, workoutIndex, workoutPlan);
+            setSelectedExercise(null);
+            setShowExerciseForm(false);
+            return;
+        }
 
-  const onExerciseFormSubmit = (exercise: Exercise) => {
-    if (selectedExercise) {
-      editExercise(exercise)
-      return
-    }
+        workoutPlan?.workouts[workoutIndex].exercises.push(exercise);
+        setShowExerciseForm(false);
+    };
 
-    const newWorkouts = [...workouts]
-    newWorkouts[workoutIndex].exercises.push(exercise)
-    setWorkouts(newWorkouts)
-    setShowExerciseForm(false)
-  }
+    const onEditExercise = (index: number) => {
+        if (!workoutPlan) {
+            return;
+        }
 
-  const editExercise = (exercise: Exercise) => {
-    if (!selectedExercise) {
-      return
-    }
+        setSelectedExercise(workoutPlan.workouts[workoutIndex].exercises[index]);
+        setShowExerciseForm(true);
+    };
 
-    if (!workouts.length) {
-      setWorkouts([{ ...emptyWorkout }])
-    }
+    const onRemoveWorkout = () => {
+        if (!workoutPlan) {
+            return;
+        }
 
-    const newWorkouts = [...workouts]
-    newWorkouts[workoutIndex].exercises = updateExercises(workouts[workoutIndex].exercises, exercise)
+        workoutPlan.workouts
+            .slice(0, workoutIndex)
+            .concat(workoutPlan.workouts.slice(workoutIndex + 1));
+    };
 
-    setWorkouts(newWorkouts)
-    setSelectedExercise(null)
-    setShowExerciseForm(false)
-  }
+    const onAddWorkout = () => {
+        if (!workoutPlan) {
+            return;
+        }
 
-  const onRemoveExercise = (index: number) => {
-    const newWorkouts = [...workouts]
-    newWorkouts[workoutIndex].exercises.splice(index, 1)
-    setWorkouts(newWorkouts)
-  }
+        let newId = 'A';
+        if (workoutPlan.workouts.length) {
+            newId = String.fromCharCode(
+                workoutPlan.workouts[workoutIndex].id.charCodeAt(
+                    workoutPlan.workouts[workoutIndex].id.length - 1
+                ) + 1
+            );
+        }
 
-  const onEditExercise = (index: number) => {
-    setSelectedExercise(workouts[workoutIndex].exercises[index])
-    setShowExerciseForm(true)
-  }
+        const newWorkout: Workout = { id: newId, exercises: [] };
+        workoutPlan.workouts.push(newWorkout);
+    };
 
-  const onRemoveWorkout = () => {
-    const newWorkouts = workouts.slice(0, workoutIndex).concat(workouts.slice(workoutIndex + 1))
-    setLocalState(newWorkouts, workoutIndex - 1)
-  }
+    const onSavePress = async () => {
+        const newWorkoutPlan: WorkoutPlan = createWorkoutPlan(
+            workoutPlan?.workouts.length || 0,
+            workoutPlan?.workouts || []
+        );
 
-  const onAddWorkout = () => {
-    const newId = String.fromCharCode(workouts[workoutIndex].id.charCodeAt(workouts[workoutIndex].id.length - 1) + 1)
-    const newWorkout: Workout = { id: newId, exercises: []}
-    
-    setLocalState([...workouts, newWorkout], workouts.length)
-  }
-  
-  const onSavePress = async () => {
-    const newWorkoutPlan: WorkoutPlan = createWorkoutPlan(workouts.length, workouts)
+        if (workoutPlan) {
+            await workoutPlanStore.removeAsync({});
+        }
 
-    if (workoutPlan) {
-      await workoutPlanStore.removeAsync({})
-    }
+        await workoutPlanStore.insertAsync(newWorkoutPlan);
+        setWorkoutPlan(newWorkoutPlan);
+    };
 
-    await workoutPlanStore.insertAsync(newWorkoutPlan)
-    setWorkoutPlan(newWorkoutPlan)
-  }
+    return (
+        <ScrollView contentContainerStyle={styles.container}>
+            {showExerciseForm && (
+                <ExerciseForm
+                    exercise={selectedExercise || undefined}
+                    onSubmit={onExerciseFormSubmit}
+                    onCancel={() => {
+                        setShowExerciseForm(false);
+                    }}
+                />
+            )}
 
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {showExerciseForm && (
-        <ExerciseForm exercise={selectedExercise || undefined} onSubmit={onExerciseFormSubmit} onCancel={() => { setShowExerciseForm(false) }} />
-      )}
+            {!showExerciseForm && (
+                <PagingControls
+                    workoutIndex={workoutIndex}
+                    workouts={workoutPlan?.workouts || []}
+                    setWorkoutIndex={setWorkoutIndex}
+                />
+            )}
 
-      {!showExerciseForm && (
-        <PagingControls workoutIndex={workoutIndex} workouts={workouts} setWorkoutIndex={setWorkoutIndex} />
-      )}
+            {!showExerciseForm &&
+                workoutPlan?.workouts[workoutIndex]?.exercises?.map((exercise, index) => (
+                    <ExerciseCard
+                        key={index}
+                        exercise={exercise}
+                        onEditPress={() => onEditExercise(index)}
+                        onRemovePress={() => removeExercise(index, workoutPlan?.workouts[workoutIndex]?.exercises)}
+                    />
+                ))}
 
-      {!showExerciseForm && workouts[workoutIndex]?.exercises?.map((exercise, index) => (
-        <ExerciseCard key={index} exercise={exercise} onEditPress={() => onEditExercise(index)} onRemovePress={() => onRemoveExercise(index)} />
-      ))}
+            {!showExerciseForm && (
+                <ActionButton onPress={() => setShowExerciseForm(true)} text="Add Exercise" />
+            )}
 
-      {!showExerciseForm && (
-        <ActionButton
-          onPress={() => setShowExerciseForm(true)}
-          text="Add Exercise"
-        />
-      )}
+            {!showExerciseForm && workoutIndex === workoutPlan?.workouts.length
+                        && <ActionButton onPress={onAddWorkout} text="Add Workout" />}
 
-      {!showExerciseForm && workoutIndex === workouts.length -1 && (
-        <ActionButton
-          onPress={onAddWorkout}
-          text="Add Workout"
-        />
-      )}
+            {!showExerciseForm && workoutIndex > 0 && (
+                <ActionButton onPress={onRemoveWorkout} text="Remove Workout" />
+            )}
 
-      {!showExerciseForm && workoutIndex > 0 && (
-        <ActionButton
-          onPress={onRemoveWorkout}
-          text="Remove Workout"
-        />
-      )}
+            {!showExerciseForm && (
+                <View style={{ padding: 20 }}>
+                    <ActionButton
+                        contained
+                        onPress={onSavePress}
+                        style={{ marginTop: 10 }}
+                        text="Save"
+                    />
 
-      {!showExerciseForm && (
-        <View style={{ padding: 20 }}>
-          <ActionButton
-            contained
-            onPress={onSavePress}
-            style={{ marginTop: 10 }}
-            text="Save"
-          />
-          
-          <ActionButton
-            onPress={() => navigation.reset({ routes: [{ name: 'BlankMenuScreen' }] })}
-            text="Home"
-          />
-        </View>
-      )}
-    </ScrollView>
-  )
+                    <ActionButton
+                        onPress={() => navigation.reset({ routes: [{ name: 'BlankMenuScreen' }] })}
+                        text="Home"
+                    />
+                </View>
+            )}
+        </ScrollView>
+    );
 }
 
-const createStyles = () => StyleSheet.create({
-  container: {
-    margin: 10,
-    marginBottom: 35,
-  },
-  input: {
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
-    marginBottom: 10,
-  },
-})
+const createStyles = () =>
+    StyleSheet.create({
+        container: {
+            margin: 10,
+            marginBottom: 35,
+        },
+        input: {
+            borderTopLeftRadius: 0,
+            borderTopRightRadius: 0,
+            marginBottom: 10,
+        },
+    });

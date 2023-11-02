@@ -1,5 +1,5 @@
 import { Exercise, WeightUnit } from '../../types/workout'
-import { createLog, addOrUpdateLog } from '../logFactory'
+import { createLog, addOrUpdateLog } from '../log'
 
 const exercise: Exercise = {
   name: 'test',

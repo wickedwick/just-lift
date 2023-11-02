@@ -4,24 +4,12 @@ import SettingsScreen from '../SettingsScreen'
 import { Button } from 'react-native-paper'
 import { configure, mount, shallow } from 'enzyme'
 import { WorkoutPlanContext } from '../../context/WorkoutPlanContext'
-import { createWorkoutPlan } from '../../services/workoutFactory'
+import { createWorkoutPlan } from '../../services/workout'
 import { act } from 'react-test-renderer'
 
 configure({ adapter: new Adapter() })
 
 const props: any = {}
-
-const mockContext: any = {
-  workoutPlanStore: {
-    find: jest.fn(),
-    insertAsync: jest.fn(),
-    removeAsync: jest.fn(),
-  },
-  logsStore: {
-    find: jest.fn(),
-    insertAsync: jest.fn(),
-  },
-}
 
 describe('<SettingsScreen />', () => {
   it('Renders', () => {
