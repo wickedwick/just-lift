@@ -53,12 +53,16 @@ describe('<CreateWorkoutScreen />', () => {
 
     it('Handles "Add Exercise" press', () => {
         const wrapper = shallow(<CreateWorkoutScreen {...props} />);
-        const addExerciseButton = wrapper.find(ActionButton).at(0);
+        const addWorkoutButton = wrapper.dive().find(ActionButton).at(0);
+        addWorkoutButton.simulate('press');
+        
+        const addExerciseButton = wrapper.dive().find(ActionButton).at(0);
         addExerciseButton.simulate('press');
+
         expect(wrapper.find('ExerciseForm').length).toBe(1);
     });
 
-    it('Handles "Add Workout" press', () => {
+    it('Handles "On Save" press', () => {
         const wrapper = shallow(<CreateWorkoutScreen {...props} />);
         const saveButton = wrapper.find(ActionButton).at(1);
         

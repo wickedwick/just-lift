@@ -4,7 +4,11 @@ import ExerciseForm from '../ExerciseForm';
 import React from 'react';
 import { configure, shallow } from 'enzyme';
 
-configure({ adapter: new Adapter() })
+configure({ adapter: new Adapter() });
+
+jest.mock('nanoid', () => {
+  return { nanoid: () => '1234' };
+});
 
 describe('<ExerciseForm />', () => {
   const props = {

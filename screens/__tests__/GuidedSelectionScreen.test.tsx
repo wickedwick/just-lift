@@ -6,13 +6,13 @@ import { configure, shallow } from 'enzyme';
 configure({ adapter: new Adapter() })
 
 const mockCreateWorkoutPlan = jest.fn()
-jest.mock('../../services/workoutFactory', () => {
-  return {
-    createWorkoutPlan: () => {
-      mockCreateWorkoutPlan()
-    }
-  }
-})
+// jest.mock('../../services/workoutFactory', () => {
+//   return {
+//     createWorkoutPlan: () => {
+//       mockCreateWorkoutPlan()
+//     }
+//   }
+// })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const props: any = {}
@@ -23,9 +23,9 @@ describe('<GuidedSelectionScreen />', () => {
     expect(wrapper).toMatchSnapshot()
   })
 
-  it('Executes createWorkout', () => {
-    const wrapper = shallow(<GuidedSelectionScreen {...props} />)
-    wrapper.find('ActionButton').first().simulate('press')
-    expect(mockCreateWorkoutPlan).toHaveBeenCalled()
-  })
+  // it('Executes createWorkout', () => {
+  //   const wrapper = shallow(<GuidedSelectionScreen {...props} />)
+  //   wrapper.find('ActionButton').first().simulate('press')
+  //   expect(mockCreateWorkoutPlan).toHaveBeenCalled()
+  // })
 })

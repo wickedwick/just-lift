@@ -8,9 +8,10 @@ import { createStore } from '../services/data';
 import { createWorkoutPlan } from '../services/workout';
 import { DataStoreType, TabOneParamList } from '../types/common';
 import { Exercise, Workout, WorkoutPlan } from '../types/workout';
+import { removeExercise, replaceExercise } from '../services/exercise';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { Snackbar } from 'react-native-paper';
 import { StackScreenProps } from '@react-navigation/stack';
-import { removeExercise, replaceExercise, updateExercises } from '../services/exercise';
 import { WorkoutPlanContext } from '../context/WorkoutPlanContext';
 
 export default function CreateWorkoutScreen({
@@ -18,6 +19,9 @@ export default function CreateWorkoutScreen({
 }: StackScreenProps<TabOneParamList, 'CreateWorkoutScreen'>): JSX.Element {
     const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
     const [showExerciseForm, setShowExerciseForm] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [visible, setVisible] = useState(false);
+    const [workouts, setWorkouts] = useState<Workout[]>([]);
     const [workoutIndex, setWorkoutIndex] = useState(0);
     const { workoutPlan, setWorkoutPlan } = useContext(WorkoutPlanContext);
     const workoutPlanStore: Datastore = createStore(DataStoreType.WorkoutPlan);
@@ -25,8 +29,10 @@ export default function CreateWorkoutScreen({
 
     useEffect(() => {
         if (!workoutPlan) {
-            const newWorkoutPlan = createWorkoutPlan(0, []);
-            setWorkoutPlan(newWorkoutPlan);
+            const newWorkout: Workout = { id: 'A', exercises: [] };
+            setWorkouts([newWorkout]);
+        } else {
+            setWorkouts(workoutPlan.workouts);
         }
     }, []);
 
@@ -38,8 +44,10 @@ export default function CreateWorkoutScreen({
             return;
         }
 
-        workoutPlan?.workouts[workoutIndex].exercises.push(exercise);
+        workouts[workoutIndex].exercises.push(exercise);
         setShowExerciseForm(false);
+        setSnackbarMessage('Exercise saved successfully!');
+        setVisible(true);
     };
 
     const onEditExercise = (index: number) => {
@@ -47,7 +55,7 @@ export default function CreateWorkoutScreen({
             return;
         }
 
-        setSelectedExercise(workoutPlan.workouts[workoutIndex].exercises[index]);
+        setSelectedExercise(workouts[workoutIndex].exercises[index]);
         setShowExerciseForm(true);
     };
 
@@ -56,33 +64,34 @@ export default function CreateWorkoutScreen({
             return;
         }
 
-        workoutPlan.workouts
-            .slice(0, workoutIndex)
-            .concat(workoutPlan.workouts.slice(workoutIndex + 1));
+        workouts.pop();
+        setWorkoutIndex(workoutIndex - 1);
+        setSnackbarMessage('Workout removed successfully!');
+        setVisible(true);
     };
 
     const onAddWorkout = () => {
-        if (!workoutPlan) {
-            return;
-        }
-
         let newId = 'A';
-        if (workoutPlan.workouts.length) {
+        if (workouts.length) {
             newId = String.fromCharCode(
-                workoutPlan.workouts[workoutIndex].id.charCodeAt(
-                    workoutPlan.workouts[workoutIndex].id.length - 1
+                workouts[workoutIndex].id.charCodeAt(
+                    workouts[workoutIndex].id.length - 1
                 ) + 1
             );
         }
 
         const newWorkout: Workout = { id: newId, exercises: [] };
-        workoutPlan.workouts.push(newWorkout);
+        workouts.push(newWorkout);
+        setWorkouts(workouts);
+        setWorkoutIndex(workoutIndex + 1);
+        setSnackbarMessage('Workout added successfully!');
+        setVisible(true);
     };
 
     const onSavePress = async () => {
         const newWorkoutPlan: WorkoutPlan = createWorkoutPlan(
-            workoutPlan?.workouts.length || 0,
-            workoutPlan?.workouts || []
+            workouts.length || 0,
+            workouts || []
         );
 
         if (workoutPlan) {
@@ -91,10 +100,55 @@ export default function CreateWorkoutScreen({
 
         await workoutPlanStore.insertAsync(newWorkoutPlan);
         setWorkoutPlan(newWorkoutPlan);
+        setSnackbarMessage('Workout plan saved successfully!');
+        setVisible(true);
     };
+
+    const isLastWorkout = (): boolean => {
+        if (!workouts.length) return true;
+        return !showExerciseForm && workoutIndex === workouts.length - 1;
+    };
+
+    const hasWorkouts = (): boolean => {
+        if (!workouts.length) return false;
+
+        return true;
+    };
+
+    const onRemoveExercise = (index: number): void => {
+        const slicedExercises = removeExercise(index, workouts[workoutIndex]?.exercises);
+        const newWorkout: Workout = {
+            id: workouts[workoutIndex].id,
+            exercises: slicedExercises,
+        };
+
+        workouts[workoutIndex] = newWorkout;
+
+        setWorkouts(workouts);
+        setSnackbarMessage('Exercise removed successfully!');
+        setVisible(true);
+    }
+
+    const onDismissSnackBar = (): void => {
+        setVisible(false);
+    }
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
+            <Snackbar
+                wrapperStyle={styles.snackbar}
+                visible={visible}
+                duration={Snackbar.DURATION_SHORT}
+                onDismiss={onDismissSnackBar}
+                action={{
+                label: 'x',
+                onPress: () => {
+                    // Do something
+                },
+                }}>
+                {snackbarMessage}
+            </Snackbar>
+            
             {showExerciseForm && (
                 <ExerciseForm
                     exercise={selectedExercise || undefined}
@@ -108,27 +162,26 @@ export default function CreateWorkoutScreen({
             {!showExerciseForm && (
                 <PagingControls
                     workoutIndex={workoutIndex}
-                    workouts={workoutPlan?.workouts || []}
+                    workouts={workouts || []}
                     setWorkoutIndex={setWorkoutIndex}
                 />
             )}
 
             {!showExerciseForm &&
-                workoutPlan?.workouts[workoutIndex]?.exercises?.map((exercise, index) => (
+                workouts[workoutIndex]?.exercises?.map((exercise, index) => (
                     <ExerciseCard
                         key={index}
                         exercise={exercise}
                         onEditPress={() => onEditExercise(index)}
-                        onRemovePress={() => removeExercise(index, workoutPlan?.workouts[workoutIndex]?.exercises)}
+                        onRemovePress={() => onRemoveExercise(index)}
                     />
                 ))}
 
-            {!showExerciseForm && (
+            {!showExerciseForm && hasWorkouts() && (
                 <ActionButton onPress={() => setShowExerciseForm(true)} text="Add Exercise" />
             )}
 
-            {!showExerciseForm && workoutIndex === workoutPlan?.workouts.length
-                        && <ActionButton onPress={onAddWorkout} text="Add Workout" />}
+            {isLastWorkout() && <ActionButton onPress={onAddWorkout} text="Add Workout" />}
 
             {!showExerciseForm && workoutIndex > 0 && (
                 <ActionButton onPress={onRemoveWorkout} text="Remove Workout" />
@@ -158,10 +211,16 @@ const createStyles = () =>
         container: {
             margin: 10,
             marginBottom: 35,
+            height: '100%',
         },
         input: {
             borderTopLeftRadius: 0,
             borderTopRightRadius: 0,
             marginBottom: 10,
         },
+        snackbar: {
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+        }
     });

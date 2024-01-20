@@ -19,7 +19,7 @@ const PagingControls = (props: PagingControlsProps): JSX.Element => {
         />
       )}
 
-      {workouts && <Text style={styles.heading}>Workout {workouts[workoutIndex]?.id}</Text>}
+      {workouts.length > 0 && <Text style={styles.heading}>Workout {workouts[workoutIndex]?.id}</Text>}
       
       {workoutIndex < workouts.length - 1 && (
         <ActionButton
